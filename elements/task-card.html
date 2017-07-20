@@ -1,0 +1,36 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="task-card">
+	<template>
+		<style>
+			:host {
+				display: flex;
+				border-top: 1px solid #eeeeee;
+				cursor: pointer;
+			}
+
+			div {
+				flex: 1 1 0;
+				padding: 20px;
+			}
+		</style>
+		<div class="ellipsis">[[task.deadline]]</div>
+		<div class="ellipsis">[[task.priority]]</div>
+		<div class="ellipsis">[[task.category]]</div>
+		<div class="ellipsis">[[task.title]]</div>
+		<div class="ellipsis">[[task.user]]</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'task-card',
+			properties: {
+				task: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				}
+			}
+		})
+	</script>
+</dom-module>

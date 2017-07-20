@@ -1,0 +1,69 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
+<dom-module id="task-detail">
+	<template>
+		<style>
+			:host {
+				display: block;
+				border-bottom: 1px solid #eeeeee;
+			}
+
+			:host:last-of-type {
+				border-bottom: inherit;
+			}
+
+			input, select {
+				appearance: none;
+				box-shadow: none;
+				border-radius: 0;
+				display: block;
+				width: calc(100% - 40px);
+				background-color: transparent;
+				margin: 20px;
+				border: 0 solid #cccccc;
+				border-bottom-width: 1px;
+				padding-bottom: 1px;
+				font-family: 'Open Sans', sans-serif;
+				font-style: normal;
+				font-weight: 300;
+				font-size: 14px;
+			}
+
+			input:focus, select:focus {
+				outline: none;
+				border-color: #01b5f4;
+				box-shadow: 0 2px 1px -1px rgba(1, 181, 244, 0.5);
+				font-weight: 600;
+				color: #01b5f4;
+			}
+		</style>
+		<iron-ajax auto url="../services/priorities.json" handle-as="json" last-response="{{priorities}}"></iron-ajax>
+		<input type="date" name="deadline" value="{{task.deadline::input}}" title="Deadline" placeholder="Deadline">
+		<select name="priority" value="{{task.priority::change}}" title="Priority">
+			<option value="">Priority</option>
+			<template is="dom-repeat" items="[[priorities]]" as="priority">
+				<option value="[[priority.id]]" selected$="{{equal(priority.id, task.priority)}}">[[priority.name]]</option>
+			</template>
+		</select>
+		<input type="text" name="category" value="{{task.category::input}}" title="Category" placeholder="Category">
+		<input type="text" name="title" value="{{task.title::input}}" title="Title" placeholder="Title">
+		<input type="text" name="user" value="{{task.user::input}}" title="User" placeholder="User">
+	</template>
+	<script>
+		Polymer({
+			is: 'task-detail',
+			properties: {
+				task: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: true
+				}
+			},
+			equal: function (a, b) {
+				return a == b;
+			}
+		})
+	</script>
+</dom-module>

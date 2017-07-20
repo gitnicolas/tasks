@@ -1,0 +1,101 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
+<link href="task-card.html" rel="import">
+<link href="task-detail.html" rel="import">
+<dom-module id="task-list">
+	<template>
+		<style>
+			:host {
+				flex: 1;
+				display: flex;
+			}
+
+			div.view {
+				flex: 1;
+				border-right: 1px solid #eeeeee;
+			}
+
+			div.view:last-of-type {
+				border-right: inherit;
+			}
+
+			input {
+				appearance: none;
+				box-shadow: none;
+				border-radius: 0;
+				display: block;
+				width: calc(100% - 40px);
+				background-color: transparent;
+				margin: 20px;
+				border: 0 solid #cccccc;
+				border-bottom-width: 1px;
+				padding-bottom: 1px;
+				font-family: 'Open Sans', sans-serif;
+				font-style: normal;
+				font-weight: 300;
+				font-size: 14px;
+			}
+
+			input:focus {
+				outline: none;
+				border-color: #01b5f4;
+				box-shadow: 0 2px 1px -1px rgba(1, 181, 244, 0.5);
+				font-weight: 600;
+				color: #01b5f4;
+			}
+		</style>
+		<iron-ajax auto url="../services/tasks.json" handle-as="json" last-response="{{tasks}}"></iron-ajax>
+		<div class="view">
+			<input type="text" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
+
+			<div>[[selected.deadline]] [[selected.priority]] [[selected.category]] [[selected.title]] [[selected.user]]</div>
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByTitle" observe="title user">
+				<task-card task="[[task]]" on-click="select"></task-card>
+			</template>
+		</div>
+		<template is="dom-if" if="[[selected]]">
+			<div class="view">
+				<task-detail task="{{selected}}"></task-detail>
+			</div>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'task-list',
+			properties: {
+				selected: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: true
+				}
+			},
+			computeFilter: function (filterString) {
+				if (filterString) {
+					filterString = filterString.trim();
+					if (filterString) {
+						filterString = filterString.toUpperCase();
+						return function (task) {
+							var title = task.title.toUpperCase();
+							var user = task.user.toUpperCase();
+							return (title.indexOf(filterString) != -1 || user.indexOf(filterString) != -1);
+						};
+					}
+				}
+				return null;
+			},
+			sortByTitle: function (a, b) {
+				var titleA = a.title.toUpperCase();
+				var titleB = b.title.toUpperCase();
+				if (titleA < titleB) return -1;
+				if (titleA > titleB) return 1;
+				return 0;
+			},
+			select: function (event) {
+				var task = this.$.list.itemForElement(event.target);
+				this.selected = (this.selected === task) ? null : task;
+			}
+		})
+	</script>
+</dom-module>

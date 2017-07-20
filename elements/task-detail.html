@@ -42,7 +42,7 @@
 		<select name="priority" value="{{task.priority::change}}" title="Priority">
 			<option value="">Priority</option>
 			<template is="dom-repeat" items="[[priorities]]" as="priority">
-				<option value="[[priority.id]]" selected$="{{equal(priority.id, task.priority)}}">[[priority.name]]</option>
+				<option value="[[priority.id]]" selected$="[[equal(priority.id, task.priority)]]">[[priority.name]]</option>
 			</template>
 		</select>
 		<input type="text" name="category" value="{{task.category::input}}" title="Category" placeholder="Category">

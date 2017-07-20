@@ -47,30 +47,20 @@
 		<iron-ajax auto url="../services/tasks.json" handle-as="json" last-response="{{tasks}}"></iron-ajax>
 		<div class="view">
 			<input type="text" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
-
-			<div>[[selected.deadline]] [[selected.priority]] [[selected.category]] [[selected.title]] [[selected.user]]</div>
 			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByTitle" observe="title user">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
-		<template is="dom-if" if="[[selected]]">
+		<array-selector id="selector" items="{{tasks}}" selected="{{task}}" toggle></array-selector>
+		<template is="dom-if" if="[[task]]">
 			<div class="view">
-				<task-detail task="{{selected}}"></task-detail>
+				<task-detail task="{{task}}"></task-detail>
 			</div>
 		</template>
 	</template>
 	<script>
 		Polymer({
 			is: 'task-list',
-			properties: {
-				selected: {
-					type: Object,
-					value: null,
-					readOnly: false,
-					notify: true,
-					reflectToAttribute: true
-				}
-			},
 			computeFilter: function (filterString) {
 				if (filterString) {
 					filterString = filterString.trim();
@@ -93,8 +83,7 @@
 				return 0;
 			},
 			select: function (event) {
-				var task = this.$.list.itemForElement(event.target);
-				this.selected = (this.selected === task) ? null : task;
+				this.$.selector.select(this.$.list.itemForElement(event.target));
 			}
 		})
 	</script>

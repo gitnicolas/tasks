@@ -36,6 +36,15 @@
 				font-weight: 600;
 				color: #01b5f4;
 			}
+
+			option {
+				color: #01b5f4;
+			}
+
+			option[selected] {
+				background-color: inherit;
+				font-weight: 600;
+			}
 		</style>
 		<iron-ajax auto url="../services/priorities.json" handle-as="json" last-response="{{priorities}}"></iron-ajax>
 		<input type="date" name="deadline" value="{{task.deadline::input}}" title="Deadline" placeholder="Deadline">

@@ -53,14 +53,14 @@
 		<iron-ajax auto url="../services/priorities.json" handle-as="json" last-response="{{priorities}}"></iron-ajax>
 		<iron-ajax auto url="../services/statuses.json" handle-as="json" last-response="{{statuses}}"></iron-ajax>
 		<input type="date" name="deadline" value="{{task.deadline::input}}" title="Deadline" placeholder="Deadline">
-		<select name="priority" value="{{task.priority::change}}" title="Priority">
+		<select name="priority" value="{{task.priority::change}}" title="Priority" required>
 			<option class="default" value="">Priority</option>
 			<template is="dom-repeat" items="[[priorities]]" as="priority">
 				<option value="[[priority.id]]" selected$="[[equal(priority.id, task.priority)]]">[[priority.name]]</option>
 			</template>
 		</select>
-		<input type="text" name="category" value="{{task.category::input}}" title="Category" placeholder="Category">
-		<input type="text" name="title" value="{{task.title::input}}" title="Title" placeholder="Title">
+		<input type="text" name="category" value="{{task.category::input}}" title="Category" placeholder="Category" required>
+		<input type="text" name="title" value="{{task.title::input}}" title="Title" placeholder="Title" required>
 		<input type="text" name="user" value="{{task.user::input}}" title="User" placeholder="User">
 		<select name="status" value="{{task.status::change}}" title="Status">
 			<option class="default" value="">Status</option>
@@ -83,7 +83,7 @@
 				}
 			},
 			equal: function (a, b) {
-				return a == b;
+				return a === b;
 			}
 		})
 	</script>

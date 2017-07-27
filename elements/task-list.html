@@ -83,7 +83,14 @@
 				return 0;
 			},
 			select: function (event) {
-				this.$.selector.select(this.$.list.itemForElement(event.target));
+				var target = 'TASK-CARD';
+				var style = 'selected';
+				var element = event.target;
+				while (element.tagName.toUpperCase() !== target) element = element.parentElement;
+				var classes = element.classList;
+				if (classes.contains(style)) classes.remove(style);
+				else classes.add(style);
+				this.$.selector.select(this.$.list.itemForElement(element));
 			}
 		})
 	</script>

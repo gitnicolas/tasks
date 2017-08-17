@@ -1,8 +1,167 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
 <link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
 <link href="task-list.html" rel="import">
+<link href="task-action.html" rel="import">
 <dom-module id="task-application">
 	<template>
+		<style>
+			:host, div.navigation, div.page {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				overflow: hidden;
+			}
+
+			div.navigation {
+				background-color: #757575;
+			}
+
+			div.navigation-title {
+				width: 256px;
+				height: 64px;
+				border-bottom: 3px solid #9e9e9e;
+				display: flex;
+			}
+
+			div.navigation-name {
+				flex: 1;
+				display: flex;
+				padding-left: 20px;
+				align-items: center;
+				font-size: 21px;
+				text-transform: uppercase;
+				color: #eeeeee;
+			}
+
+			div.page {
+				background-color: #fafafa;
+			}
+
+			div.expanded {
+				right: -256px;
+				left: 256px;
+			}
+
+			div.header {
+				z-index: 2;
+				position: absolute;
+				top: 0;
+				right: 0;
+				left: 0;
+				background-color: #78909c;
+			}
+
+			div.title {
+				position: relative;
+				height: 64px;
+				border-bottom: 3px solid #cfd8dc;
+				background-color: #607d8b;
+				display: flex;
+				font-size: 21px;
+				text-transform: uppercase;
+			}
+
+			div.burger, div.action {
+				width: 64px;
+				background-color: #78909c;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: white;
+				cursor: pointer;
+			}
+
+			div.back {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 64px;
+				max-width: 216px;
+				padding: 0 20px 0 20px;
+				display: flex;
+				align-items: center;
+				color: white;
+				cursor: pointer;
+			}
+
+			div.name {
+				flex: 1;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: white;
+			}
+
+			div.name div.ellipsis {
+				max-width: 320px;
+			}
+
+			div.menu {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				border-radius: 2px;
+				background-color: white;
+				font-size: 14px;
+				text-transform: none;
+				color: black;
+			}
+
+			div.menu-item {
+				padding: 20px;
+				display: flex;
+				align-items: center;
+			}
+
+			div.menu-item:hover {
+				background-color: #f5f5f5;
+			}
+
+			div.menu-item i {
+				margin-right: 20px;
+				color: #757575;
+			}
+
+			div.bar {
+				height: 56px;
+			}
+
+			div.content {
+				position: absolute;
+				top: 123px;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: flex;
+			}
+
+			div.left-pane {
+				z-index: 1;
+				width: 320px;
+				background-color: white;
+				cursor: pointer;
+			}
+
+			div.collapsed {
+				width: 64px;
+			}
+
+			/* div.burger.width(64px) + div.action.width(64px) + 2 * div.back.min-width(64px) + div.name.max-width(320px) - 1 */
+			@media (max-width: 575px) {
+				div.name div.ellipsis {
+					display: none;
+				}
+			}
+
+			/* div.burger.width(64px) + div.action.width(64px) + 2 * div.back.max-width(256px) + div.name.max-width(320px) - 1 */
+			@media (max-width: 959px) {
+				div.back div.ellipsis {
+					display: none;
+				}
+			}
+		</style>
 		<div class="navigation">
 			<div class="navigation-title">
 				<div class="navigation-name">
@@ -41,19 +200,7 @@
 				<iron-ajax auto url="../services/tasks.json" handle-as="json" last-response="{{tasks}}"></iron-ajax>
 				<task-list tasks="{{tasks}}"></task-list>
 			</div>
-			<div id="action-floating" class="action-floating shadow-floating">
-				<i>view_list</i>
-
-				<div class="action-floating action-refresh shadow-floating transition pressed">
-					<i>refresh</i>
-				</div>
-				<div class="action-floating action-unread shadow-floating transition pressed">
-					<i>close</i>
-				</div>
-				<div class="action-floating action-read shadow-floating transition pressed">
-					<i>done_all</i>
-				</div>
-			</div>
+			<task-action tasks="{{tasks}}"></task-action>
 		</div>
 	</template>
 	<script>

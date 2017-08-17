@@ -1,5 +1,4 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
-<link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
 <link href="task-card.html" rel="import">
 <link href="task-detail.html" rel="import">
 <dom-module id="task-list">
@@ -44,7 +43,6 @@
 				color: #01b5f4;
 			}
 		</style>
-		<iron-ajax auto url="../services/tasks.json" handle-as="json" last-response="{{tasks}}"></iron-ajax>
 		<div class="view">
 			<input type="text" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
 			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByTitle" observe="title user">
@@ -61,6 +59,15 @@
 	<script>
 		Polymer({
 			is: 'task-list',
+			properties: {
+				tasks: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: true
+				}
+			},
 			computeFilter: function (filterString) {
 				if (filterString) {
 					filterString = filterString.trim();

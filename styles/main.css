@@ -13,7 +13,7 @@ body {
 	user-select: none;
 }
 
-div.application, div.navigation, div.page {
+task-application, div.navigation, div.page {
 	position: absolute;
 	top: 0;
 	right: 0;

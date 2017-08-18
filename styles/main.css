@@ -33,7 +33,7 @@ div.shadow-page {
 	box-shadow: -3px 0 5px rgba(0, 0, 0, 0.25);
 }
 
-.shadow-floating {
+div.shadow-floating, task-action.shadow-floating {
 	box-shadow: 2px 4px 7px rgba(0, 0, 0, 0.25);
 }
 

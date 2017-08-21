@@ -49,10 +49,10 @@
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
-		<array-selector id="selector" items="{{tasks}}" selected="{{task}}" toggle></array-selector>
-		<template is="dom-if" if="[[task]]">
+		<array-selector id="selector" items="{{tasks}}" selected="{{selected}}" toggle></array-selector>
+		<template is="dom-if" if="[[selected]]">
 			<div class="view">
-				<task-detail task="{{task}}"></task-detail>
+				<task-detail task="{{selected}}"></task-detail>
 			</div>
 		</template>
 	</template>
@@ -68,8 +68,8 @@
 					reflectToAttribute: false
 				},
 				selected: {
-					type: Number,
-					value: undefined,
+					type: Object,
+					value: null,
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
@@ -104,10 +104,7 @@
 				var classes = element.classList;
 				if (classes.contains(style)) classes.remove(style);
 				else classes.add(style);
-				var item = this.$.list.itemForElement(element);
-				this.$.selector.select(item);
-				if (this.$.selector.selected) this.selected = Number(this.$.list.keyForElement(element).substring(1));
-				else this.selected = undefined;
+				this.$.selector.select(this.$.list.itemForElement(element));
 			}
 		})
 	</script>

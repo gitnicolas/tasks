@@ -82,8 +82,8 @@
 					reflectToAttribute: false
 				},
 				selected: {
-					type: Number,
-					value: undefined,
+					type: Object,
+					value: null,
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
@@ -148,8 +148,12 @@
 			},
 			delete: function () {
 				if (this.selected) {
-					this.splice('tasks', this.selected, 1);
-					this.selected = undefined;
+					this.selected.deleted = true;
+					var index = this.tasks.findIndex(function (item) {
+						return item.deleted;
+					});
+					this.splice('tasks', index, 1);
+					this.selected = null;
 				}
 			}
 		})

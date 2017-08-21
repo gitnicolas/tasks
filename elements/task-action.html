@@ -117,8 +117,7 @@
 					}, 0);
 				}
 			},
-			create: function (event) {
-				if (event) event.stopPropagation();
+			create: function () {
 				var date = (new Date()).toJSON();
 				date = date.substr(0, date.indexOf('T'));
 				var task = {
@@ -131,7 +130,6 @@
 					"user": ""
 				};
 				this.push('tasks', task);
-				this.toggle();
 			}
 		})
 	</script>

@@ -80,6 +80,13 @@
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
+				},
+				selected: {
+					type: Number,
+					value: undefined,
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
 				}
 			},
 			created: function () {
@@ -89,13 +96,21 @@
 				this.listen(this, tapEventName, 'toggle');
 				var elements = this.getElementsByClassName('create');
 				var length = elements.length;
-				for (var i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'create');
+				var i;
+				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'create');
+				elements = this.getElementsByClassName('delete');
+				length = elements.length;
+				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'delete');
 			},
 			detached: function () {
 				this.unlisten(this, tapEventName, 'toggle');
 				var elements = this.getElementsByClassName('create');
 				var length = elements.length;
-				for (var i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'create');
+				var i;
+				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'create');
+				elements = this.getElementsByClassName('delete');
+				length = elements.length;
+				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'delete');
 			},
 			toggle: function (event) {
 				if (event) event.stopPropagation();
@@ -119,7 +134,7 @@
 			},
 			create: function () {
 				var date = (new Date()).toJSON();
-				date = date.substr(0, date.indexOf('T'));
+				date = date.substring(0, date.indexOf('T'));
 				var task = {
 					"category": "",
 					"deadline": date,
@@ -130,6 +145,12 @@
 					"user": ""
 				};
 				this.push('tasks', task);
+			},
+			delete: function () {
+				if (this.selected) {
+					this.splice('tasks', this.selected, 1);
+					this.selected = undefined;
+				}
 			}
 		})
 	</script>

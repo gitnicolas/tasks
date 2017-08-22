@@ -145,6 +145,9 @@
 					"user": ""
 				};
 				this.push('tasks', task);
+				var selector = document.getElementById('selector');
+				if (selector) selector.select(task);
+				else this.selected = task;
 			},
 			delete: function () {
 				if (this.selected) {
@@ -152,9 +155,25 @@
 					var index = this.tasks.findIndex(function (item) {
 						return item.deleted;
 					});
+					var selector = document.getElementById('selector');
+					if (selector) selector.select(this.tasks[index]);
+					else this.selected = null;
 					this.splice('tasks', index, 1);
-					this.selected = null;
 				}
+			},
+			save: function () {
+				var request = new XMLHttpRequest();
+				request.onreadystatechange = function () {
+					if (this.readyState === XMLHttpRequest.DONE) {
+						if (this.status >= 200 && this.status < 300) {
+							console.log("Response Body: %s", this.responseText);
+						} else {
+							console.log("Response Status: %d (%s)", this.status, this.statusText);
+						}
+					}
+				};
+				request.open('GET', 'http://www.mozilla.org/', true);
+				request.send(null);
 			}
 		})
 	</script>

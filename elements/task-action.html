@@ -81,11 +81,11 @@
 					notify: true,
 					reflectToAttribute: false
 				},
-				selected: {
+				selector: {
 					type: Object,
 					value: null,
 					readOnly: false,
-					notify: true,
+					notify: false,
 					reflectToAttribute: false
 				}
 			},
@@ -145,19 +145,15 @@
 					"user": ""
 				};
 				this.push('tasks', task);
-				var selector = document.getElementById('selector');
-				if (selector) selector.select(task);
-				else this.selected = task;
+				if (this.selector) selector.select(task);
 			},
 			delete: function () {
-				if (this.selected) {
-					this.selected.deleted = true;
+				if (this.selector.selected) {
+					this.selector.selected.deleted = true;
 					var index = this.tasks.findIndex(function (item) {
 						return item.deleted;
 					});
-					var selector = document.getElementById('selector');
-					if (selector) selector.select(this.tasks[index]);
-					else this.selected = null;
+					if (this.selector) selector.deselect(this.tasks[index]);
 					this.splice('tasks', index, 1);
 				}
 			},

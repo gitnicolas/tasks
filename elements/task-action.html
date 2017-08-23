@@ -22,7 +22,7 @@
 				color: #9e9e9e;
 			}
 
-			div.refresh {
+			div.save {
 				right: 0;
 				bottom: 192px;
 				opacity: 1;
@@ -40,7 +40,7 @@
 				opacity: 1;
 			}
 
-			div[class~="refresh"].pressed {
+			div[class~="save"].pressed {
 				right: 0;
 				bottom: 96px;
 				opacity: 0;
@@ -60,8 +60,8 @@
 		</style>
 		<i>view_list</i>
 
-		<div class="refresh shadow-floating transition pressed">
-			<i>refresh</i>
+		<div class="save shadow-floating transition pressed">
+			<i>save</i>
 		</div>
 		<div class="delete shadow-floating transition pressed">
 			<i>delete</i>
@@ -101,6 +101,9 @@
 				elements = this.getElementsByClassName('delete');
 				length = elements.length;
 				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'delete');
+				elements = this.getElementsByClassName('save');
+				length = elements.length;
+				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'save');
 			},
 			detached: function () {
 				this.unlisten(this, tapEventName, 'toggle');
@@ -111,6 +114,9 @@
 				elements = this.getElementsByClassName('delete');
 				length = elements.length;
 				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'delete');
+				elements = this.getElementsByClassName('save');
+				length = elements.length;
+				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'save');
 			},
 			toggle: function (event) {
 				if (event) event.stopPropagation();
@@ -168,7 +174,9 @@
 						}
 					}
 				};
-				request.open('GET', 'http://www.mozilla.org/', true);
+				var credentials = '';
+				request.open('GET', 'https://', true);
+				request.setRequestHeader('Authorization', 'Basic ' + utf8ToBase64(credentials));
 				request.send(null);
 			}
 		})

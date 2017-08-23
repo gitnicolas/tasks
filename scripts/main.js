@@ -4,6 +4,14 @@ var isMobile = function () {
 
 var tapEventName = isMobile() ? 'touchstart' : 'click';
 
+var utf8ToBase64 = function (string) {
+	return btoa(encodeURI(string));
+};
+
+var base64ToUTF8 = function (string) {
+	return decodeURI(atob(string));
+};
+
 var toggleStyle = function (element, style, event) {
 	if (event) event.stopPropagation();
 	var elements = document.getElementsByClassName(element);

@@ -20,7 +20,7 @@
 		</style>
 		<div class="view">
 			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
-			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByTitle" observe="title user">
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="title user">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
@@ -66,6 +66,13 @@
 					}
 				}
 				return null;
+			},
+			sortByEmergency: function (a, b) {
+				if (a.deadline < b.deadline) return -1;
+				if (a.deadline > b.deadline) return 1;
+				if (a.priority < b.priority) return -1;
+				if (a.priority > b.priority) return 1;
+				return 0;
 			},
 			sortByTitle: function (a, b) {
 				var titleA = a.title.toUpperCase();

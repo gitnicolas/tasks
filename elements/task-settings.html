@@ -14,6 +14,13 @@
 		Polymer({
 			is: 'task-settings',
 			properties: {
+				isReady: {
+					type: Boolean,
+					value: false,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
 				settings: {
 					type: Object,
 					value: {
@@ -25,16 +32,21 @@
 					},
 					readOnly: false,
 					notify: true,
-					reflectToAttribute: false,
-					observer: 'persist'
+					reflectToAttribute: false
 				}
 			},
+			observers: [
+				'persist(settings.*)'
+			],
 			ready: function () {
 				var settings = localStorage.getItem('settings');
 				if (settings) this.settings = JSON.parse(settings);
+				this.isReady = true;
 			},
 			persist: function () {
-				localStorage.setItem('settings', JSON.stringify(this.settings));
+				if (this.isReady) this.debounce('persist', function () {
+					localStorage.setItem('settings', JSON.stringify(this.settings));
+				}, 500);
 			}
 		})
 	</script>

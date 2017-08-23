@@ -87,6 +87,13 @@
 					readOnly: false,
 					notify: false,
 					reflectToAttribute: false
+				},
+				settings: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
 				}
 			},
 			created: function () {
@@ -142,13 +149,13 @@
 				var date = (new Date()).toJSON();
 				date = date.substring(0, date.indexOf('T'));
 				var task = {
-					"category": "",
-					"deadline": date,
-					"description": "",
-					"priority": 3,
-					"status": "Open",
-					"title": "",
-					"user": ""
+					category: '',
+					deadline: date,
+					description: '',
+					priority: 3,
+					status: 'Open',
+					title: '',
+					user: ''
 				};
 				this.push('tasks', task);
 				if (this.selector) selector.select(task);
@@ -164,20 +171,29 @@
 				}
 			},
 			save: function () {
-				var request = new XMLHttpRequest();
-				request.onreadystatechange = function () {
-					if (this.readyState === XMLHttpRequest.DONE) {
-						if (this.status >= 200 && this.status < 300) {
-							console.log("Response Body: %s", this.responseText);
-						} else {
-							console.log("Response Status: %d (%s)", this.status, this.statusText);
-						}
+				this.settings = {
+					server: {
+						url: 'https://',
+						user: null,
+						password: null
 					}
 				};
-				var credentials = '';
-				request.open('GET', 'https://', true);
-				request.setRequestHeader('Authorization', 'Basic ' + utf8ToBase64(credentials));
-				request.send(null);
+				var server;
+				if (this.settings && (server = this.settings.server)) {
+					var request = new XMLHttpRequest();
+					request.onreadystatechange = function () {
+						if (this.readyState === XMLHttpRequest.DONE) {
+							if (this.status >= 200 && this.status < 300) {
+								console.log("Response Body: %s", this.responseText);
+							} else {
+								console.log("Response Status: %d (%s)", this.status, this.statusText);
+							}
+						}
+					};
+					request.open('PUT', server.url, true, server.user, server.password);
+					request.setRequestHeader('Content-Type', 'application/json');
+					request.send(JSON.stringify(this.tasks));
+				}
 			}
 		})
 	</script>

@@ -5,12 +5,12 @@
 	<template>
 		<style>
 			:host {
-				flex: 1;
+				flex: 1 1 0;
 				display: flex;
 			}
 
 			div.view {
-				flex: 1;
+				flex: 1 1 0;
 				border-right: 1px solid #eeeeee;
 			}
 
@@ -19,8 +19,8 @@
 			}
 		</style>
 		<div class="view">
-			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
-			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="title user">
+			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Category, Title, User">
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="deadline priority category title user">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
@@ -59,9 +59,10 @@
 					if (filterString) {
 						filterString = filterString.toUpperCase();
 						return function (task) {
+							var category = task.category.toUpperCase();
 							var title = task.title.toUpperCase();
 							var user = task.user.toUpperCase();
-							return (title.indexOf(filterString) != -1 || user.indexOf(filterString) != -1);
+							return (category.indexOf(filterString) != -1 || title.indexOf(filterString) != -1 || user.indexOf(filterString) != -1);
 						};
 					}
 				}

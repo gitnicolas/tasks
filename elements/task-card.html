@@ -13,15 +13,34 @@
 			}
 
 			div {
-				flex: 1 1 0;
 				padding: 20px;
 			}
+
+			div.deadline {
+				flex: 0 0 73px;
+			}
+
+			div.priority {
+				flex: 0 0 8px;
+			}
+
+			div.category {
+				flex: 0 0 40px;
+			}
+
+			div.title {
+				flex: 3 3 0;
+			}
+
+			div.user {
+				flex: 1 1 0;
+			}
 		</style>
-		<div class="ellipsis">[[task.deadline]]</div>
-		<div class="ellipsis">[[task.priority]]</div>
-		<div class="ellipsis">[[task.category]]</div>
-		<div class="ellipsis">[[task.title]]</div>
-		<div class="ellipsis">[[task.user]]</div>
+		<div class="deadline">[[task.deadline]]</div>
+		<div class="priority">[[task.priority]]</div>
+		<div class="category ellipsis">[[task.category]]</div>
+		<div class="title ellipsis">[[task.title]]</div>
+		<div class="user ellipsis">[[task.user]]</div>
 	</template>
 	<script>
 		Polymer({

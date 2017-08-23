@@ -25,8 +25,16 @@
 					},
 					readOnly: false,
 					notify: true,
-					reflectToAttribute: false
+					reflectToAttribute: false,
+					observer: 'persist'
 				}
+			},
+			ready: function () {
+				var settings = localStorage.getItem('settings');
+				if (settings) this.settings = JSON.parse(settings);
+			},
+			persist: function () {
+				localStorage.setItem('settings', JSON.stringify(this.settings));
 			}
 		})
 	</script>

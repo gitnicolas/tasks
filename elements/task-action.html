@@ -171,13 +171,6 @@
 				}
 			},
 			save: function () {
-				this.settings = {
-					server: {
-						url: 'https://',
-						user: null,
-						password: null
-					}
-				};
 				var server;
 				if (this.settings && (server = this.settings.server)) {
 					var request = new XMLHttpRequest();

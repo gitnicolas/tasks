@@ -17,34 +17,9 @@
 			div.view:last-of-type {
 				border-right: inherit;
 			}
-
-			input {
-				appearance: none;
-				box-shadow: none;
-				border-radius: 0;
-				display: block;
-				width: calc(100% - 40px);
-				background-color: transparent;
-				margin: 20px;
-				border: 0 solid #cccccc;
-				border-bottom-width: 1px;
-				padding-bottom: 1px;
-				font-family: 'Open Sans', sans-serif;
-				font-style: normal;
-				font-weight: 300;
-				font-size: 14px;
-			}
-
-			input:focus {
-				outline: none;
-				border-color: #01b5f4;
-				box-shadow: 0 2px 1px -1px rgba(1, 181, 244, 0.5);
-				font-weight: 600;
-				color: #01b5f4;
-			}
 		</style>
 		<div class="view">
-			<input type="text" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
+			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Title, User">
 			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByTitle" observe="title user">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>

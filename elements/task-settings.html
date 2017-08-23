@@ -1,0 +1,33 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="task-settings">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<input type="url" name="url" value="{{settings.server.url::input}}" title="URL" placeholder="URL">
+		<input type="text" name="user" value="{{settings.server.user::input}}" title="User" placeholder="User">
+		<input type="password" name="password" value="{{settings.server.password::input}}" title="Password" placeholder="Password">
+	</template>
+	<script>
+		Polymer({
+			is: 'task-settings',
+			properties: {
+				settings: {
+					type: Object,
+					value: {
+						server: {
+							url: 'services/tasks.json',
+							user: null,
+							password: null
+						}
+					},
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				}
+			}
+		})
+	</script>
+</dom-module>

@@ -11,12 +11,22 @@
 
 			div.view {
 				flex: 1 1 auto;
-				border-right: 1px solid #eeeeee;
 				overflow-y: auto;
 			}
 
-			div.view:last-of-type {
-				border-right: inherit;
+			div.view:nth-of-type(2) {
+				border-left: 1px solid #eeeeee;
+			}
+
+			@media (max-width: 575px) {
+				:host {
+					flex-direction: column;
+				}
+
+				div.view:nth-of-type(2) {
+					border-left: inherit;
+					border-top: 1px solid #eeeeee;
+				}
 			}
 		</style>
 		<div class="view">

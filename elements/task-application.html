@@ -209,7 +209,38 @@
 	</template>
 	<script>
 		Polymer({
-			is: 'task-application'
+			is: 'task-application',
+			attached: function () {
+				this.listen(this.$.burger, tapEventName, 'burger');
+				this.listen(this.$.action, tapEventName, 'action');
+				this.listen(document.getElementById('left-pane'), tapEventName, 'leftPane');
+			},
+			detached: function () {
+				this.unlisten(this.$.burger, tapEventName, 'burger');
+				this.unlisten(this.$.action, tapEventName, 'action');
+				this.unlisten(document.getElementById('left-pane'), tapEventName, 'leftPane');
+			},
+			burger: function (event) {
+				this.toggleStyle('page', 'expanded', event);
+			},
+			action: function (event) {
+				this.toggleStyle('menu', 'hidden', event);
+			},
+			leftPane: function (event) {
+				this.toggleStyle('left-pane', 'collapsed', event);
+			},
+			toggleStyle: function (element, style, event) {
+				if (event) event.stopPropagation();
+				var elements = document.getElementsByClassName(element);
+				var length;
+				if (elements && (length = elements.length)) {
+					for (var i = 0; i < length; i++) {
+						var classes = elements[i].classList;
+						if (classes.contains(style)) classes.remove(style);
+						else classes.add(style);
+					}
+				}
+			}
 		})
 	</script>
 </dom-module>

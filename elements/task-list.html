@@ -10,8 +10,9 @@
 			}
 
 			div.view {
-				flex: 1 1 0;
+				flex: 1 1 auto;
 				border-right: 1px solid #eeeeee;
+				overflow-y: auto;
 			}
 
 			div.view:last-of-type {
@@ -71,8 +72,8 @@
 			sortByEmergency: function (a, b) {
 				if (a.deadline < b.deadline) return -1;
 				if (a.deadline > b.deadline) return 1;
-				if (a.priority < b.priority) return -1;
-				if (a.priority > b.priority) return 1;
+				if (a.priority < b.priority) return 1;
+				if (a.priority > b.priority) return -1;
 				return 0;
 			},
 			sortByTitle: function (a, b) {

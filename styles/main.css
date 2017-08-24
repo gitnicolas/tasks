@@ -18,6 +18,7 @@ input, select, textarea {
 	box-shadow: none;
 	border-radius: 0;
 	display: block;
+	box-sizing: border-box;
 	width: calc(100% - 40px);
 	background-color: transparent;
 	margin: 20px;

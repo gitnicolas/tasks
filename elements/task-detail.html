@@ -39,6 +39,40 @@
 					reflectToAttribute: false
 				}
 			},
+			ready: function () {
+				if (isInternetExplorer()) {
+					this._addComplexObserverEffect('fillSelect(priorities.*)');
+					this._addComplexObserverEffect('fillSelect(statuses.*)');
+				}
+			},
+			fillSelect: function (property) {
+				var attributeName, attributeKey;
+				switch (property.path) {
+					case 'priorities':
+						attributeName = 'priority';
+						attributeKey = 'id';
+						break;
+					case 'statuses':
+						attributeName = 'status';
+						attributeKey = 'name';
+						break;
+					default:
+						return;
+				}
+				var select = this.$$('select[name="' + attributeName + '"]');
+				var children = select.children;
+				var length = children.length;
+				for (var i = 1; i < length; i++) select.removeChild(children.item(i));
+				property.value.forEach(function (item) {
+					var option = document.createElement('option');
+					option.className = 'style-scope task-detail';
+					option.value = item[attributeKey];
+					option.selected = this.equal(item[attributeKey], this.task[attributeName]);
+					option.textContent = item.name;
+					select.appendChild(option);
+				}, this);
+				if (attributeName === 'priority') select.selectedIndex = this.task[attributeName];
+			},
 			equal: function (a, b) {
 				return a === b;
 			}

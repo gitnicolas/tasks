@@ -4,6 +4,10 @@ var isMobile = function () {
 
 var tapEventName = isMobile() ? 'touchstart' : 'click';
 
+var isInternetExplorer = function () {
+	return /MSIE|Trident/.test(navigator.userAgent);
+};
+
 var utf8ToBase64 = function (string) {
 	return btoa(encodeURI(string));
 };

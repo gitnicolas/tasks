@@ -74,7 +74,7 @@
 							var category = task.category.toUpperCase();
 							var title = task.title.toUpperCase();
 							var user = task.user.toUpperCase();
-							return (category.indexOf(filterString) != -1 || title.indexOf(filterString) != -1 || user.indexOf(filterString) != -1);
+							return (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1);
 						};
 					}
 				}

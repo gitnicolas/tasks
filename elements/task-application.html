@@ -251,7 +251,7 @@
 			},
 			computeHeaders: function (user, password) {
 				return {
-					Authorization: utf8ToBase64(user + ':' + password)
+					Authorization: 'Basic ' + utf8ToBase64(user + ':' + password)
 				};
 			}
 		})

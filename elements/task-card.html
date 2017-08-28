@@ -38,7 +38,7 @@
 				flex: 1 1;
 			}
 		</style>
-		<div class="deadline">[[task.deadline]]</div>
+		<div class="deadline">[[toLocaleDateString(task.deadline)]]</div>
 		<div class="priority">[[task.priority]]</div>
 		<div class="category ellipsis">[[task.category]]</div>
 		<div class="title ellipsis">[[task.title]]</div>
@@ -55,6 +55,9 @@
 					notify: false,
 					reflectToAttribute: false
 				}
+			},
+			toLocaleDateString: function (date) {
+				return (new Date(date)).toLocaleDateString();
 			}
 		})
 	</script>

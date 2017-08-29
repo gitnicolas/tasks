@@ -19,15 +19,20 @@
 			}
 
 			div.deadline {
-				flex: 0 0 93px;
+				flex: 0 0 94px;
 			}
 
 			div.priority {
-				flex: 0 0 28px;
+				flex: 0 0 67px;
+				padding: 8px 21px 3px 21px;
+			}
+
+			div.priority i {
+				margin: 0 -11px;
 			}
 
 			div.category {
-				flex: 0 0 60px;
+				flex: 0 0 58px;
 			}
 
 			div.title {
@@ -39,7 +44,11 @@
 			}
 		</style>
 		<div class="deadline">[[toLocaleDateString(task.deadline)]]</div>
-		<div class="priority">[[task.priority]]</div>
+		<div class="priority">
+			<template is="dom-repeat" items="[[computePriority(task.priority)]]">
+				<i>chevron_right</i>
+			</template>
+		</div>
 		<div class="category ellipsis">[[task.category]]</div>
 		<div class="title ellipsis">[[task.title]]</div>
 		<div class="user ellipsis">[[task.user]]</div>
@@ -58,6 +67,11 @@
 			},
 			toLocaleDateString: function (date) {
 				return (new Date(date)).toLocaleDateString();
+			},
+			computePriority: function (priority) {
+				var array = [];
+				for (var i = 0; i < priority; i++) array.push(true);
+				return array;
 			}
 		})
 	</script>

@@ -95,14 +95,20 @@
 				return 0;
 			},
 			select: function (event) {
-				var target = 'TASK-CARD';
-				var style = 'selected';
-				var element = event.target;
-				while (element.tagName.toUpperCase() !== target) element = element.parentElement;
-				var classes = element.classList;
-				if (classes.contains(style)) classes.remove(style);
-				else classes.add(style);
-				this.selector.select(this.$.list.itemForElement(element));
+				var selector = this.selector;
+				var item = this.$.list.itemForElement(event.target);
+				if (selector.isSelected(item)) {
+					item.selected = false;
+					selector.deselect(item);
+				} else {
+					item.selected = true;
+					selector.select(item);
+				}
+				var detail = {
+					path: 'tasks.' + this.$.list.keyForElement(event.target) + '.selected',
+					value: item.selected
+				};
+				this.fire('tasks-changed', detail);
 			}
 		})
 	</script>

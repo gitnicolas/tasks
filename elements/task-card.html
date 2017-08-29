@@ -65,6 +65,9 @@
 					reflectToAttribute: false
 				}
 			},
+			observers: [
+				'select(task.selected)'
+			],
 			toLocaleDateString: function (date) {
 				return (new Date(date)).toLocaleDateString();
 			},
@@ -72,6 +75,9 @@
 				var array = [];
 				for (var i = 0; i < priority; i++) array.push(true);
 				return array;
+			},
+			select: function (selected) {
+				this.toggleClass('selected', selected);
 			}
 		})
 	</script>

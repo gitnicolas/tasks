@@ -96,17 +96,28 @@
 			},
 			select: function (event) {
 				var selector = this.selector;
-				var item = this.$.list.itemForElement(event.target);
+				var model = this.$.list.modelForElement(event.target);
+				var item = model.task;
 				if (selector.isSelected(item)) {
 					item.selected = false;
 					selector.deselect(item);
+					selector.lastSelected = null;
 				} else {
+					var lastModel = selector.lastSelected;
+					if (lastModel) {
+						lastModel.task.selected = false;
+						this.fireTaskSelect(lastModel.__key__, false);
+					}
 					item.selected = true;
 					selector.select(item);
+					selector.lastSelected = model;
 				}
+				this.fireTaskSelect(model.__key__, item.selected);
+			},
+			fireTaskSelect: function (key, value) {
 				var detail = {
-					path: 'tasks.' + this.$.list.keyForElement(event.target) + '.selected',
-					value: item.selected
+					path: 'tasks.' + key + '.selected',
+					value: value
 				};
 				this.fire('tasks-changed', detail);
 			}

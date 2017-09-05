@@ -8,6 +8,13 @@ var isInternetExplorer = function () {
 	return /MSIE|Trident/.test(navigator.userAgent);
 };
 
+var findIndex = function (array, testFunction) {
+	if (Array.prototype.findIndex) return array.findIndex(testFunction);
+	var length = array.length;
+	for (var i = 0; i < length; i++) if (testFunction(array[i])) return i;
+	return -1;
+};
+
 var utf8ToBase64 = function (string) {
 	return btoa(encodeURI(string));
 };

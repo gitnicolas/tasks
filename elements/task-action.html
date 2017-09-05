@@ -158,15 +158,17 @@
 					user: ''
 				};
 				this.push('tasks', task);
-				if (this.selector) selector.select(task);
+				var selector = this.selector;
+				if (selector) selector.select(task);
 			},
 			delete: function () {
-				if (this.selector.selected) {
-					this.selector.selected.deleted = true;
-					var index = this.tasks.findIndex(function (item) {
+				var selector = this.selector;
+				if (selector && selector.selected) {
+					selector.selected.deleted = true;
+					var index = findIndex(this.tasks, function (item) {
 						return item.deleted;
 					});
-					if (this.selector) selector.deselect(this.tasks[index]);
+					selector.deselect(this.tasks[index]);
 					this.splice('tasks', index, 1);
 				}
 			},

@@ -153,13 +153,25 @@
 					deadline: date,
 					description: '',
 					priority: 3,
+					selected: true,
 					status: 'Open',
 					title: '',
 					user: ''
 				};
 				this.push('tasks', task);
 				var selector = this.selector;
-				if (selector) selector.select(task);
+				if (selector) {
+					var lastModel = selector.lastSelected;
+					if (lastModel) {
+						lastModel.task.selected = false;
+						this.fireTaskSelect(lastModel.__key__, false);
+					}
+					selector.select(task);
+					selector.lastSelected = {
+						__key__: document.getElementById('list').__data__['items.splices'].keySplices[0].added[0],
+						task: task
+					};
+				}
 			},
 			delete: function () {
 				var selector = this.selector;
@@ -189,6 +201,13 @@
 					request.setRequestHeader('Content-Type', 'application/json');
 					request.send(JSON.stringify(this.tasks));
 				}
+			},
+			fireTaskSelect: function (key, value) {
+				var detail = {
+					path: 'tasks.' + key + '.selected',
+					value: value
+				};
+				this.fire('tasks-changed', detail);
 			}
 		})
 	</script>

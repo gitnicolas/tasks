@@ -231,13 +231,13 @@
 				this.listen(this.$.burger, tapEventName, 'burger');
 				this.listen(this.$.action, tapEventName, 'action');
 				this.listen(this.$.refresh, tapEventName, 'refresh');
-				this.listen(document.getElementById('left-pane'), tapEventName, 'leftPane');
+				this.listen(this.$['left-pane'], tapEventName, 'leftPane');
 			},
 			detached: function () {
 				this.unlisten(this.$.burger, tapEventName, 'burger');
 				this.unlisten(this.$.action, tapEventName, 'action');
 				this.unlisten(this.$.refresh, tapEventName, 'refresh');
-				this.unlisten(document.getElementById('left-pane'), tapEventName, 'leftPane');
+				this.unlisten(this.$['left-pane'], tapEventName, 'leftPane');
 			},
 			burger: function (event) {
 				this.toggleStyle('page', 'expanded', event);

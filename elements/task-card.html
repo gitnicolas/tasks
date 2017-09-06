@@ -17,6 +17,11 @@
 				background-color: #01b5f4;
 			}
 
+			:host.closed {
+				font-style: italic;
+				color: #757575;
+			}
+
 			div {
 				box-sizing: border-box;
 				padding: 10px;
@@ -70,7 +75,8 @@
 				}
 			},
 			observers: [
-				'select(task.selected)'
+				'select(task.selected)',
+				'close(task.status)'
 			],
 			toLocaleDateString: function (date) {
 				return (new Date(date)).toLocaleDateString();
@@ -82,6 +88,9 @@
 			},
 			select: function (selected) {
 				this.toggleClass('selected', selected);
+			},
+			close: function (status) {
+				this.toggleClass('closed', status === 'Closed');
 			}
 		})
 	</script>

@@ -1,1 +1,2 @@
 - Verify JavaScript version of "const" keyword and if 5.0 use for finalTaskStatus variable
+- Replace this.async 10 milliseconds by wait next frame

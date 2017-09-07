@@ -36,7 +36,8 @@
 					value: null,
 					readOnly: false,
 					notify: true,
-					reflectToAttribute: false
+					reflectToAttribute: false,
+					observer: 'formFocus'
 				}
 			},
 			ready: function () {
@@ -44,6 +45,11 @@
 					this._addComplexObserverEffect('fillSelect(priorities.*)');
 					this._addComplexObserverEffect('fillSelect(statuses.*)');
 				}
+			},
+			formFocus: function () {
+				this.async(function () {
+					this.$$('input[name="deadline"]').focus();
+				}, 10);
 			},
 			fillSelect: function (property) {
 				var attributeName, attributeKey;

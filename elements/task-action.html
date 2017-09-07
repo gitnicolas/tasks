@@ -161,15 +161,15 @@
 				this.push('tasks', task);
 				var selector = this.selector;
 				if (selector) {
-					var lastModel = selector.lastSelected;
-					if (lastModel) {
-						lastModel.task.selected = false;
-						this.fireTaskSelect(lastModel.__key__, false);
+					var lastSelected = selector.lastSelected;
+					if (lastSelected) {
+						lastSelected.item.selected = false;
+						this.fireTaskSelect(lastSelected.key, false);
 					}
 					selector.select(task);
 					selector.lastSelected = {
-						__key__: document.getElementById('list').__data__['items.splices'].keySplices[0].added[0],
-						task: task
+						key: document.getElementById('list').__data__['items.splices'].keySplices[0].added[0],
+						item: task
 					};
 				}
 			},

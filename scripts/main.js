@@ -1,3 +1,5 @@
+var finalTaskStatus = 'Closed';
+
 var isMobile = function () {
 	return /iPad|iPhone|iPod|Android|Linux arm|BlackBerry|WinCE|Pocket/i.test(navigator.platform);
 };

@@ -1,0 +1,1 @@
+- Verify JavaScript version of "const" keyword and if 5.0 use for finalTaskStatus variable

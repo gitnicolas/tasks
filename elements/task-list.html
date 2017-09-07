@@ -32,7 +32,7 @@
 		</style>
 		<div class="view">
 			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Category, Title, User">
-			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="deadline priority category title user">
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
@@ -81,6 +81,8 @@
 				return null;
 			},
 			sortByEmergency: function (a, b) {
+				if (a.status !== finalTaskStatus && b.status === finalTaskStatus) return -1;
+				if (a.status === finalTaskStatus && b.status !== finalTaskStatus) return 1;
 				if (a.deadline < b.deadline) return -1;
 				if (a.deadline > b.deadline) return 1;
 				if (a.priority < b.priority) return 1;
@@ -103,14 +105,17 @@
 					selector.deselect(item);
 					selector.lastSelected = null;
 				} else {
-					var lastModel = selector.lastSelected;
-					if (lastModel) {
-						lastModel.task.selected = false;
-						this.fireTaskSelect(lastModel.__key__, false);
+					var lastSelected = selector.lastSelected;
+					if (lastSelected) {
+						lastSelected.item.selected = false;
+						this.fireTaskSelect(lastSelected.key, false);
 					}
 					item.selected = true;
 					selector.select(item);
-					selector.lastSelected = model;
+					selector.lastSelected = {
+						key: model.__key__,
+						item: model.task
+					};
 				}
 				this.fireTaskSelect(model.__key__, item.selected);
 			},

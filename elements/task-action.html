@@ -94,6 +94,13 @@
 					readOnly: false,
 					notify: false,
 					reflectToAttribute: false
+				},
+				alert: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
 				}
 			},
 			created: function () {
@@ -188,26 +195,33 @@
 				var server;
 				if (this.settings && (server = this.settings.server)) {
 					var request = new XMLHttpRequest();
-					request.onreadystatechange = function () {
-						if (this.readyState === XMLHttpRequest.DONE) {
-							if (this.status >= 200 && this.status < 300) {
-								console.log("Response Body: %s", this.responseText);
-							} else {
-								console.log("Response Status: %d (%s)", this.status, this.statusText);
+					request.onreadystatechange = (function (request, element) {
+						return function () {
+							if (request.readyState === XMLHttpRequest.DONE) {
+								if (request.status >= 200 && request.status < 300) {
+									console.log("Response Body: %s", request.responseText);
+								} else {
+									element.alert = {
+										title: 'Response Status: ' + request.status + ', ' + request.statusText
+									};
+									element.fire('alert-changed', {
+										path: 'alert',
+										value: element.alert
+									});
+								}
 							}
-						}
-					};
-					request.open('PUT', server.url, true, server.user, server.password);
-					request.setRequestHeader('Content-Type', 'application/json');
-					request.send(JSON.stringify(this.tasks));
+						};
+					})(request, this);
 				}
+				request.open('PUT', server.url, true, server.user, server.password);
+				request.setRequestHeader('Content-Type', 'application/json');
+				request.send(JSON.stringify(this.tasks));
 			},
 			fireTaskSelect: function (key, value) {
-				var detail = {
+				this.fire('tasks-changed', {
 					path: 'tasks.' + key + '.selected',
 					value: value
-				};
-				this.fire('tasks-changed', detail);
+				});
 			}
 		})
 	</script>

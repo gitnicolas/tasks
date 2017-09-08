@@ -1,0 +1,61 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="task-alert">
+	<template>
+		<style>
+			:host {
+				z-index: 3;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.75);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+			}
+
+			div.dialog {
+				box-sizing: border-box;
+				width: 50%;
+				min-width: 240px;
+				height: calc(100vh / 3);
+				min-height: 180px;
+				border-radius: 10px;
+				padding: 20px;
+				background-color: white;
+				box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
+				cursor: pointer;
+			}
+		</style>
+		<div id="dialog" class="dialog">[[alert.title]]</div>
+	</template>
+	<script>
+		Polymer({
+			is: 'task-alert',
+			properties: {
+				alert: {
+					type: Object,
+					value: null,
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				}
+			},
+			attached: function () {
+				this.listen(this.$.dialog, tapEventName, 'clear');
+			},
+			detached: function () {
+				this.unlisten(this.$.dialog, tapEventName, 'clear');
+			},
+			clear: function () {
+				this.alert = null;
+				this.fire('alert-changed', {
+					path: 'alert',
+					value: null
+				});
+			}
+		})
+	</script>
+</dom-module>

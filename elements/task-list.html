@@ -120,11 +120,10 @@
 				this.fireTaskSelect(model.__key__, item.selected);
 			},
 			fireTaskSelect: function (key, value) {
-				var detail = {
+				this.fire('tasks-changed', {
 					path: 'tasks.' + key + '.selected',
 					value: value
-				};
-				this.fire('tasks-changed', detail);
+				});
 			}
 		})
 	</script>

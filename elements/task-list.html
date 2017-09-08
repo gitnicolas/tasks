@@ -66,17 +66,14 @@
 				this.selector = this.$.selector;
 			},
 			computeFilter: function (filterString) {
-				if (filterString) {
-					filterString = filterString.trim();
-					if (filterString) {
-						filterString = filterString.toUpperCase();
-						return function (task) {
-							var category = task.category.toUpperCase();
-							var title = task.title.toUpperCase();
-							var user = task.user.toUpperCase();
-							return (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1);
-						};
-					}
+				if (filterString && (filterString = filterString.trim())) {
+					filterString = filterString.toUpperCase();
+					return function (task) {
+						var category = task.category.toUpperCase();
+						var title = task.title.toUpperCase();
+						var user = task.user.toUpperCase();
+						return (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1);
+					};
 				}
 				return null;
 			},

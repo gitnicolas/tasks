@@ -22,16 +22,22 @@
 				min-width: 240px;
 				height: calc(100vh / 3);
 				min-height: 180px;
-				border-radius: 10px;
+				border-radius: 2px;
 				padding: 20px;
 				background-color: white;
 				display: flex;
+				justify-content: center;
 				align-items: center;
 				box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
 				cursor: pointer;
 			}
+
+			div.dialog i {
+				margin-right: 20px;
+				font-size: 64px;
+			}
 		</style>
-		<div id="dialog" class="dialog">[[alert.title]]</div>
+		<div id="dialog" class="dialog"><i style$="color: [[alert.color]];">[[alert.icon]]</i>[[alert.title]]</div>
 	</template>
 	<script>
 		Polymer({

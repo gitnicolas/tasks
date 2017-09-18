@@ -199,16 +199,22 @@
 						return function () {
 							if (request.readyState === XMLHttpRequest.DONE) {
 								if (request.status >= 200 && request.status < 300) {
-									console.log("Response Body: %s", request.responseText);
+									element.alert = {
+										color: '#8bc34a',
+										icon: 'cloud_done',
+										title: 'Tasks list saved successfully ! (with status: ' + request.status + ')'
+									};
 								} else {
 									element.alert = {
-										title: 'Response Status: ' + request.status + ', ' + request.statusText
+										color: '#ff5722',
+										icon: 'cloud_off',
+										title: 'Error while saving tasks list ! (with status: ' + request.status + ')'
 									};
-									element.fire('alert-changed', {
-										path: 'alert',
-										value: element.alert
-									});
 								}
+								element.fire('alert-changed', {
+									path: 'alert',
+									value: element.alert
+								});
 							}
 						};
 					})(request, this);

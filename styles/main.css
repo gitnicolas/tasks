@@ -33,14 +33,14 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
 	outline: none;
-	border-color: #01b5f4;
+	border-color: #29b6f6;
 	box-shadow: 0 2px 1px -1px rgba(1, 181, 244, 0.5);
 	font-weight: 600;
-	color: #01b5f4;
+	color: #29b6f6;
 }
 
 option {
-	color: #01b5f4;
+	color: #29b6f6;
 }
 
 option[selected] {

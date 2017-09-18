@@ -1,10 +1,8 @@
 var finalTaskStatus = 'Closed';
 
-var isMobile = function () {
-	return /iPad|iPhone|iPod|Android|Linux arm|BlackBerry|WinCE|Pocket/i.test(navigator.platform);
-};
+var isMobile = /iPad|iPhone|iPod|Android|Linux arm|BlackBerry|WinCE|Pocket/i.test(navigator.platform);
 
-var tapEventName = isMobile() ? 'touchstart' : 'click';
+var tapEventName = isMobile ? 'touchstart' : 'click';
 
 var isInternetExplorer = function () {
 	return /MSIE|Trident/.test(navigator.userAgent);

@@ -47,9 +47,11 @@
 				}
 			},
 			formFocus: function () {
-				this.async(function () {
-					this.$$('input[name="deadline"]').focus();
-				}, 10);
+				if (!isMobile) {
+					this.async(function () {
+						this.$$('input[name="deadline"]').focus();
+					}, 10);
+				}
 			},
 			fillSelect: function (property) {
 				var attributeName, attributeKey;

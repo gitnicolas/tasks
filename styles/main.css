@@ -72,6 +72,24 @@ div.shadow-left {
 	box-shadow: -2px 0 3px rgba(0, 0, 0, 0.25);
 }
 
+div.shadow-previous {
+	box-shadow: -2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+div.shadow-next {
+	box-shadow: 2px 0 3px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 575px) {
+	div.shadow-previous {
+		box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.25);
+	}
+
+	div.shadow-next {
+		box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+	}
+}
+
 div.shadow-page {
 	box-shadow: -3px 0 5px rgba(0, 0, 0, 0.25);
 }

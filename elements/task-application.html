@@ -1,6 +1,7 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
 <link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
 <link href="task-settings.html" rel="import">
+<link href="task-users.html" rel="import">
 <link href="task-list.html" rel="import">
 <link href="task-action.html" rel="import">
 <link href="task-alert.html" rel="import">
@@ -209,7 +210,9 @@
 				<div class="bar shadow-bottom"></div>
 			</div>
 			<div id="content" class="content">
-				<div id="left-pane" class="left-pane shadow-right transition"></div>
+				<div id="left-pane" class="left-pane shadow-right transition">
+					<task-users tasks="[[tasks]]" users="{{users}}"></task-users>
+				</div>
 				<iron-ajax auto url="[[settings.server.url]]" headers="[[computeHeaders(settings.server.user, settings.server.password)]]" params="[[parameters]]" handle-as="json" last-response="{{tasks}}"></iron-ajax>
 				<task-list tasks="{{tasks}}" selector="{{selector}}"></task-list>
 			</div>

@@ -1,0 +1,55 @@
+<link href="../libraries/polymer/polymer.html" rel="import">
+<dom-module id="task-users">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			div.user {
+				border-bottom: 1px solid #eeeeee;
+				padding: 10px 20px;
+			}
+		</style>
+		<template is="dom-repeat" items="[[users]]" as="user">
+			<div class="user ellipsis">[[user]]</div>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			is: 'task-users',
+			properties: {
+				tasks: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
+				users: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
+				}
+			},
+			observers: [
+				'unique(tasks.*)'
+			],
+			unique: function (property) {
+				if (property.path === 'tasks' || property.path.indexOf('user') > 0) {
+					this.debounce('persist', function () {
+						console.log('GO!');
+						var users = [];
+						this.tasks.forEach(function (item) {
+							var user = item.user;
+							if (users.indexOf(user) < 0) users.push(user);
+						});
+						this.users = users.sort();
+					}, 500);
+				}
+			}
+		})
+	</script>
+</dom-module>

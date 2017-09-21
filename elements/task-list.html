@@ -14,9 +14,9 @@
 				overflow-y: auto;
 			}
 
-			div.view:last-of-type {
+			div.view:nth-of-type(2) {
 				min-width: 40%;
-				border-left: 1px solid #eeeeee;
+				background-color: white;
 			}
 
 			@media (max-width: 575px) {
@@ -24,23 +24,38 @@
 					flex-direction: column;
 				}
 
-				div.view:last-of-type {
+				div.view:nth-of-type(2) {
 					min-width: inherit;
 					min-height: 276px;
-					border-left: inherit;
-					border-top: 1px solid #eeeeee;
 				}
+			}
+
+			div.list-header {
+				display: flex;
+			}
+
+			div.counter {
+				margin: 20px 20px 20px 0;
+				border-radius: 10px;
+				padding: 0 6px;
+				background-color: #607d8b;
+				white-space: nowrap;
+				color: white;
 			}
 		</style>
 		<div class="view">
-			<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Category, Title, User">
+			<div class="list-header">
+				<input type="search" name="filter" value="{{filterString::input}}" title="Filter" placeholder="Search: Category, Title, User">
+
+				<div class="counter">[[displayed]] of [[tasks.length]]</div>
+			</div>
 			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
 				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
 		<array-selector id="selector" items="{{tasks}}" selected="{{task}}" toggle></array-selector>
 		<template is="dom-if" if="[[task]]">
-			<div class="view">
+			<div class="view shadow-previous">
 				<task-detail task="{{task}}"></task-detail>
 			</div>
 		</template>
@@ -49,11 +64,18 @@
 		Polymer({
 			is: 'task-list',
 			properties: {
-				tasks: {
-					type: Array,
-					value: [],
+				displayed: {
+					type: Number,
+					value: 0,
 					readOnly: false,
-					notify: true,
+					notify: false,
+					reflectToAttribute: false
+				},
+				isReady: {
+					type: Boolean,
+					value: false,
+					readOnly: false,
+					notify: false,
 					reflectToAttribute: false
 				},
 				selector: {
@@ -62,10 +84,41 @@
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
+				},
+				tasks: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: true,
+					reflectToAttribute: false
 				}
 			},
+			observers: [
+				'persist(filterString)'
+			],
 			ready: function () {
 				this.selector = this.$.selector;
+				var filterString = localStorage.getItem('filter');
+				if (filterString) this.filterString = filterString;
+				this.isReady = true;
+			},
+			attached: function () {
+				this.listen(this.$.list, 'rendered-item-count-changed', 'updateDisplayed');
+			},
+			detached: function () {
+				this.unlisten(this.$.list, 'rendered-item-count-changed', 'updateDisplayed');
+			},
+			persist: function () {
+				if (this.isReady) this.debounce('persist', function () {
+					localStorage.setItem('filter', this.filterString);
+				}, 500);
+			},
+			updateDisplayed: function () {
+				this.displayed = this.$.list.renderedItemCount;
+				this.fire('displayed-changed', {
+					path: 'displayed',
+					value: this.displayed
+				});
 			},
 			computeFilter: function (filterString) {
 				if (filterString && (filterString = filterString.trim())) {

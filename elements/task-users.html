@@ -40,12 +40,21 @@
 			unique: function (property) {
 				if (property.path === 'tasks' || property.path.indexOf('user') > 0) {
 					this.debounce('persist', function () {
-						console.log('GO!');
+						var tasks = this.tasks;
+						var tasksLength = tasks.length;
 						var users = [];
-						this.tasks.forEach(function (item) {
-							var user = item.user;
-							if (users.indexOf(user) < 0) users.push(user);
-						});
+						var line, lineLength, user, i, j;
+						for (i = 0; i < tasksLength; i++) {
+							user = tasks[i].user;
+							if (user) {
+								line = user.split(',');
+								lineLength = line.length;
+								for (j = 0; j < lineLength; j++) {
+									user = line[j].trim();
+									if (users.indexOf(user) < 0) users.push(user);
+								}
+							}
+						}
 						this.users = users.sort();
 					}, 500);
 				}

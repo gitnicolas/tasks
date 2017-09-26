@@ -50,7 +50,7 @@
 				'unique(tasks.*)'
 			],
 			unique: function (property) {
-				if (property.path === 'tasks' || property.path.indexOf('user') > 0) {
+				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('user') > 0) {
 					this.debounce('persist', function () {
 						var tasks = this.tasks;
 						var tasksLength = tasks.length;

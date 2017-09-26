@@ -10,10 +10,15 @@
 				border-bottom: 1px solid #eeeeee;
 				padding: 10px 20px;
 			}
+
+			div.selected {
+				background-color: #ffccbc;
+			}
 		</style>
-		<template is="dom-repeat" items="[[users]]" as="user">
-			<div class="user ellipsis">[[user]]</div>
+		<template is="dom-repeat" id="list" items="[[users]]" as="user">
+			<div class="user ellipsis" on-tap="select">[[user]]</div>
 		</template>
+		<array-selector id="selector" items="[[users]]" selected="{{selected}}" multi toggle></array-selector>
 	</template>
 	<script>
 		Polymer({
@@ -29,6 +34,13 @@
 				users: {
 					type: Array,
 					value: [],
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
+				},
+				selected: {
+					type: Array,
+					value: undefined,
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
@@ -58,6 +70,13 @@
 						this.users = users.sort();
 					}, 500);
 				}
+			},
+			select: function (event) {
+				if (event) event.stopPropagation();
+				var selector = this.$.selector;
+				var item = this.$.list.itemForElement(event.target);
+				selector.select(item);
+				this.toggleClass('selected', selector.isSelected(item), event.target);
 			}
 		})
 	</script>

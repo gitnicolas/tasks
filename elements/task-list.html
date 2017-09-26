@@ -11,6 +11,7 @@
 
 			div.view {
 				flex: 1 1 auto;
+				overflow-x: hidden;
 				overflow-y: auto;
 			}
 
@@ -49,8 +50,8 @@
 
 				<div class="counter">[[displayed]] of [[tasks.length]]</div>
 			</div>
-			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
-				<task-card task="[[task]]" on-click="select"></task-card>
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(users.length, filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
+				<task-card task="[[task]]" on-tap="select"></task-card>
 			</template>
 		</div>
 		<array-selector id="selector" items="{{tasks}}" selected="{{task}}" toggle></array-selector>
@@ -91,6 +92,13 @@
 					readOnly: false,
 					notify: true,
 					reflectToAttribute: false
+				},
+				users: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
 				}
 			},
 			observers: [
@@ -100,6 +108,7 @@
 				this.selector = this.$.selector;
 				var filterString = localStorage.getItem('filter');
 				if (filterString) this.filterString = filterString;
+				else this.filterString = '';
 				this.isReady = true;
 			},
 			attached: function () {
@@ -120,14 +129,21 @@
 					value: this.displayed
 				});
 			},
-			computeFilter: function (filterString) {
-				if (filterString && (filterString = filterString.trim())) {
-					filterString = filterString.toUpperCase();
+			computeFilter: function (usersLength, filterString) {
+				if (usersLength || (filterString && (filterString = filterString.trim()))) {
+					if (usersLength) var users = this.users;
+					if (filterString) filterString = filterString.toUpperCase();
 					return function (task) {
-						var category = task.category.toUpperCase();
-						var title = task.title.toUpperCase();
 						var user = task.user.toUpperCase();
-						return (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1);
+						if (usersLength) {
+							for (var i = 0; i < usersLength; i++) if (user.indexOf(users[i].toUpperCase()) !== -1) return true;
+						}
+						if (filterString) {
+							var category = task.category.toUpperCase();
+							var title = task.title.toUpperCase();
+							if (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1) return true;
+						}
+						return false;
 					};
 				}
 				return null;
@@ -149,6 +165,7 @@
 				return 0;
 			},
 			select: function (event) {
+				if (event) event.stopPropagation();
 				var selector = this.selector;
 				var model = this.$.list.modelForElement(event.target);
 				var item = model.task;

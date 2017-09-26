@@ -175,7 +175,7 @@
 					}
 					selector.select(task);
 					selector.lastSelected = {
-						key: document.getElementById('list').__data__['items.splices'].keySplices[0].added[0],
+						key: document.getElementsByTagName('task-list')[0].$.list.__data__['items.splices'].keySplices[0].added[0],
 						item: task
 					};
 				}

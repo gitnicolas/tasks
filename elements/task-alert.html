@@ -57,7 +57,8 @@
 			detached: function () {
 				this.unlisten(this.$.dialog, tapEventName, 'clear');
 			},
-			clear: function () {
+			clear: function (event) {
+				if (event) event.stopPropagation();
 				this.alert = null;
 				this.fire('alert-changed', {
 					path: 'alert',

@@ -59,11 +59,7 @@
 			},
 			clear: function (event) {
 				if (event) event.stopPropagation();
-				this.alert = null;
-				this.fire('alert-changed', {
-					path: 'alert',
-					value: null
-				});
+				this.set('alert', null);
 			}
 		})
 	</script>

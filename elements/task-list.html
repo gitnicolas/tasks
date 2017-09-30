@@ -123,11 +123,7 @@
 				}, 500);
 			},
 			updateDisplayed: function () {
-				this.displayed = this.$.list.renderedItemCount;
-				this.fire('displayed-changed', {
-					path: 'displayed',
-					value: this.displayed
-				});
+				this.set('displayed', this.$.list.renderedItemCount);
 			},
 			computeFilter: function (usersLength, filterString) {
 				if (usersLength || (filterString && (filterString = filterString.trim()))) {
@@ -167,32 +163,15 @@
 			select: function (event) {
 				if (event) event.stopPropagation();
 				var selector = this.selector;
-				var model = this.$.list.modelForElement(event.target);
-				var item = model.task;
+				var item = event.model.task;
 				if (selector.isSelected(item)) {
-					item.selected = false;
+					selector.set('selected.selected', false);
 					selector.deselect(item);
-					selector.lastSelected = null;
 				} else {
-					var lastSelected = selector.lastSelected;
-					if (lastSelected) {
-						lastSelected.item.selected = false;
-						this.fireTaskSelect(lastSelected.key, false);
-					}
-					item.selected = true;
+					if (selector.selected) selector.set('selected.selected', false);
 					selector.select(item);
-					selector.lastSelected = {
-						key: model.__key__,
-						item: model.task
-					};
+					selector.set('selected.selected', true);
 				}
-				this.fireTaskSelect(model.__key__, item.selected);
-			},
-			fireTaskSelect: function (key, value) {
-				this.fire('tasks-changed', {
-					path: 'tasks.' + key + '.selected',
-					value: value
-				});
 			}
 		})
 	</script>

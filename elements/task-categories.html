@@ -1,14 +1,25 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
-<dom-module id="task-users">
+<dom-module id="task-categories">
 	<template>
 		<style>
 			:host {
-				display: block;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				flex-direction: row;
+				overflow-x: auto;
+				overflow-y: hidden;
 			}
 
-			div.user {
-				border-bottom: 1px solid #eeeeee;
-				padding: 10px 20px;
+			div.category {
+				flex: 1 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: white;
 				cursor: pointer;
 			}
 
@@ -16,14 +27,14 @@
 				background-color: #ffccbc;
 			}
 		</style>
-		<template is="dom-repeat" id="list" items="[[users]]" as="user">
-			<div class="user ellipsis" on-tap="select">[[user]]</div>
+		<template is="dom-repeat" id="list" items="[[categories]]" as="category">
+			<div class="category ellipsis" on-tap="select">[[category]]</div>
 		</template>
-		<array-selector id="selector" items="[[users]]" selected="{{selected}}" multi toggle></array-selector>
+		<array-selector id="selector" items="[[categories]]" selected="{{selected}}" multi toggle></array-selector>
 	</template>
 	<script>
 		Polymer({
-			is: 'task-users',
+			is: 'task-categories',
 			properties: {
 				tasks: {
 					type: Array,
@@ -32,7 +43,7 @@
 					notify: false,
 					reflectToAttribute: false
 				},
-				users: {
+				categories: {
 					type: Array,
 					value: [],
 					readOnly: false,
@@ -51,34 +62,34 @@
 				'unique(tasks.*)'
 			],
 			unique: function (property) {
-				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('user') > 0) {
+				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('category') > 0) {
 					this.debounce('persist', function () {
 						var tasks = this.tasks;
 						var tasksLength = tasks.length;
-						var users = [];
-						var line, lineLength, user, i, j;
+						var categories = [];
+						var line, lineLength, category, i, j;
 						for (i = 0; i < tasksLength; i++) {
-							user = tasks[i].user;
-							if (user) {
-								line = user.split(',');
+							category = tasks[i].category;
+							if (category) {
+								line = category.split(',');
 								lineLength = line.length;
 								for (j = 0; j < lineLength; j++) {
-									user = line[j].trim();
-									if (users.indexOf(user) < 0) users.push(user);
+									category = line[j].trim();
+									if (categories.indexOf(category) < 0) categories.push(category);
 								}
 							}
 						}
 						var selected = this.querySelectorAll('div[class~="selected"]');
 						var length = selected.length;
 						for (i = 0; i < length; i++) selected[i].classList.remove('selected');
-						this.set('users', users.sort());
+						this.set('categories', categories.sort());
 					}, 500);
 				}
 			},
 			select: function (event) {
 				if (event) event.stopPropagation();
 				var selector = this.$.selector;
-				var item = event.model.user;
+				var item = event.model.category;
 				selector.select(item);
 				this.toggleClass('selected', selector.isSelected(item), event.target);
 			}

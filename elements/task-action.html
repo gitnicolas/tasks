@@ -168,16 +168,9 @@
 				this.push('tasks', task);
 				var selector = this.selector;
 				if (selector) {
-					var lastSelected = selector.lastSelected;
-					if (lastSelected) {
-						lastSelected.item.selected = false;
-						this.fireTaskSelect(lastSelected.key, false);
-					}
+					if (selector.selected) selector.set('selected.selected', false);
 					selector.select(task);
-					selector.lastSelected = {
-						key: document.getElementsByTagName('task-list')[0].$.list.__data__['items.splices'].keySplices[0].added[0],
-						item: task
-					};
+					selector.set('selected.selected', true);
 				}
 			},
 			delete: function () {
@@ -199,22 +192,18 @@
 						return function () {
 							if (request.readyState === XMLHttpRequest.DONE) {
 								if (request.status >= 200 && request.status < 300) {
-									element.alert = {
+									element.set('alert', {
 										color: '#8bc34a',
 										icon: 'cloud_done',
 										title: 'Tasks list saved successfully ! (with status: ' + request.status + ')'
-									};
+									});
 								} else {
-									element.alert = {
+									element.set('alert', {
 										color: '#ff5722',
 										icon: 'cloud_off',
 										title: 'Error while saving tasks list ! (with status: ' + request.status + ')'
-									};
+									});
 								}
-								element.fire('alert-changed', {
-									path: 'alert',
-									value: element.alert
-								});
 							}
 						};
 					})(request, this);
@@ -222,12 +211,6 @@
 				request.open('PUT', server.url, true, server.user, server.password);
 				request.setRequestHeader('Content-Type', 'application/json');
 				request.send(JSON.stringify(this.tasks));
-			},
-			fireTaskSelect: function (key, value) {
-				this.fire('tasks-changed', {
-					path: 'tasks.' + key + '.selected',
-					value: value
-				});
 			}
 		})
 	</script>

@@ -1,6 +1,7 @@
 <link href="../libraries/polymer/polymer.html" rel="import">
 <link href="../libraries/iron-ajax/iron-ajax.html" rel="import">
 <link href="task-settings.html" rel="import">
+<link href="task-categories.html" rel="import">
 <link href="task-users.html" rel="import">
 <link href="task-list.html" rel="import">
 <link href="task-action.html" rel="import">
@@ -129,6 +130,7 @@
 			}
 
 			div.bar {
+				position: relative;
 				height: 56px;
 			}
 
@@ -209,7 +211,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="bar shadow-bottom"></div>
+				<div class="bar shadow-bottom">
+					<task-categories tasks="[[tasks]]" selected="{{categories}}"></task-categories>
+				</div>
 			</div>
 			<div id="content" class="content">
 				<div id="left-pane" class="left-pane shadow-right transition">
@@ -230,7 +234,9 @@
 			properties: {
 				parameters: {
 					type: Object,
-					value: null,
+					value: {
+						ts: (new Date()).toISOString()
+					},
 					readOnly: false,
 					notify: false,
 					reflectToAttribute: false
@@ -255,14 +261,7 @@
 				this.toggleStyle('menu', 'hidden', event);
 			},
 			refresh: function () {
-				var timestamp = (new Date()).toISOString();
-				this.parameters = {
-					ts: timestamp
-				};
-				this.fire('parameters-changed', {
-					path: 'parameters.ts',
-					value: timestamp
-				});
+				this.set('parameters.ts', (new Date()).toISOString());
 			},
 			leftPane: function (event) {
 				this.toggleStyle('left-pane', 'collapsed', event);

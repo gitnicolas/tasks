@@ -15,7 +15,9 @@
 			}
 
 			div.category {
-				flex: 1 0;
+				flex: 1 0 38px;
+				margin: 0 10px;
+				border-bottom: 3px solid transparent;
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -23,12 +25,18 @@
 				cursor: pointer;
 			}
 
-			div.selected {
-				background-color: #ffccbc;
+			div.category:hover {
+				border-bottom-color: #cfd8dc;
+				background-color: #90a4ae;
+			}
+
+			div.selected, div.selected:hover {
+				border-bottom-color: #eceff1;
+				font-weight: 600;
 			}
 		</style>
 		<template is="dom-repeat" id="list" items="[[categories]]" as="category">
-			<div class="category ellipsis" on-tap="select">[[category]]</div>
+			<div class="category" on-tap="select">[[category]]</div>
 		</template>
 		<array-selector id="selector" items="[[categories]]" selected="{{selected}}" multi toggle></array-selector>
 	</template>

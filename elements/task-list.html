@@ -11,12 +11,13 @@
 
 			div.view {
 				flex: 1 1 auto;
+				width: calc((100vw - 128px) * 0.6);
 				overflow-x: hidden;
 				overflow-y: auto;
 			}
 
 			div.view:nth-of-type(2) {
-				min-width: 40%;
+				width: calc((100vw - 128px) * 0.4);
 				background-color: white;
 			}
 
@@ -25,8 +26,11 @@
 					flex-direction: column;
 				}
 
+				div.view {
+					width: inherit;
+				}
+
 				div.view:nth-of-type(2) {
-					min-width: inherit;
 					min-height: 276px;
 				}
 			}

@@ -50,7 +50,7 @@
 
 				<div class="counter">[[displayed]] of [[tasks.length]]</div>
 			</div>
-			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(users.length, filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
+			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(users.length, categories.length, filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
 				<task-card task="[[task]]" on-tap="select"></task-card>
 			</template>
 		</div>
@@ -99,6 +99,13 @@
 					readOnly: false,
 					notify: false,
 					reflectToAttribute: false
+				},
+				categories: {
+					type: Array,
+					value: [],
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
 				}
 			},
 			observers: [
@@ -125,21 +132,25 @@
 			updateDisplayed: function () {
 				this.set('displayed', this.$.list.renderedItemCount);
 			},
-			computeFilter: function (usersLength, filterString) {
-				if (usersLength || (filterString && (filterString = filterString.trim()))) {
+			computeFilter: function (usersLength, categoriesLength, filterString) {
+				if (usersLength || categoriesLength || filterString && (filterString = filterString.trim())) {
 					if (usersLength) var users = this.users;
+					if (categoriesLength) var categories = this.categories;
 					if (filterString) filterString = filterString.toUpperCase();
 					return function (task) {
-						var user = task.user.toUpperCase();
-						if (usersLength) {
-							for (var i = 0; i < usersLength; i++) if (user.indexOf(users[i].toUpperCase()) !== -1) return true;
+						var i, userTest, categoryTest, filterTest;
+						var user = task.user;
+						if (usersLength) for (i = 0; i < usersLength; i++) if (user.indexOf(users[i]) !== -1) {
+							userTest = true;
+							break;
 						}
-						if (filterString) {
-							var category = task.category.toUpperCase();
-							var title = task.title.toUpperCase();
-							if (category.indexOf(filterString) !== -1 || title.indexOf(filterString) !== -1 || user.indexOf(filterString) !== -1) return true;
+						var category = task.category;
+						if (categoriesLength) for (i = 0; i < categoriesLength; i++) if (category.indexOf(categories[i]) !== -1) {
+							categoryTest = true;
+							break;
 						}
-						return false;
+						if (filterString) filterTest = task.title.toUpperCase().indexOf(filterString) !== -1 || user.toUpperCase().indexOf(filterString) !== -1 || category.toUpperCase().indexOf(filterString) !== -1;
+						return (!usersLength || userTest) && (!categoriesLength || categoryTest) && (!filterString || filterTest);
 					};
 				}
 				return null;

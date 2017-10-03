@@ -221,7 +221,7 @@
 					<task-users tasks="[[tasks]]" selected="{{users}}"></task-users>
 				</div>
 				<iron-ajax auto url="[[settings.server.url]]" headers="[[computeHeaders(settings.server.user, settings.server.password)]]" params="[[parameters]]" handle-as="json" last-response="{{tasks}}"></iron-ajax>
-				<task-list tasks="{{tasks}}" selector="{{selector}}" users="[[users]]"></task-list>
+				<task-list tasks="{{tasks}}" selector="{{selector}}" users="[[users]]" categories="[[categories]]"></task-list>
 			</div>
 			<task-action tasks="{{tasks}}" selector="[[selector]]" settings="[[settings]]" alert="{{alert}}"></task-action>
 			<template is="dom-if" if="[[alert]]" restamp>

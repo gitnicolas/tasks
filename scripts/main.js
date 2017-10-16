@@ -2,11 +2,26 @@ var finalTaskStatus = 'Closed';
 
 var isMobile = /iPad|iPhone|iPod|Android|Linux arm|BlackBerry|WinCE|Pocket/i.test(navigator.platform);
 
+var isInternetExplorer = /MSIE|Trident/.test(navigator.userAgent);
+
 var tapEventName = isMobile ? 'touchstart' : 'click';
 
-var isInternetExplorer = function () {
-	return /MSIE|Trident/.test(navigator.userAgent);
-};
+if (!HTMLElement.prototype.requestFullscreen) Object.defineProperty(HTMLElement.prototype, 'requestFullscreen', {
+	value: HTMLElement.prototype.webkitRequestFullscreen || HTMLElement.prototype.webkitRequestFullScreen || HTMLElement.prototype.mozRequestFullScreen || HTMLElement.prototype.msRequestFullscreen
+});
+
+if (!HTMLDocument.prototype.exitFullscreen) Object.defineProperty(HTMLDocument.prototype, 'exitFullscreen', {
+	value: HTMLDocument.prototype.webkitExitFullscreen || HTMLDocument.prototype.webkitCancelFullScreen || HTMLDocument.prototype.mozCancelFullScreen || HTMLDocument.prototype.msExitFullscreen
+});
+
+if (!HTMLDocument.prototype.getFullscreenElement) Object.defineProperty(HTMLDocument.prototype, 'getFullscreenElement', {
+	value: function () {
+		if (this.fullscreenElement !== undefined) return this.fullscreenElement;
+		if (this.webkitFullscreenElement !== undefined) return this.webkitFullscreenElement;
+		if (this.mozFullScreenElement !== undefined) return this.mozFullScreenElement;
+		if (this.msFullscreenElement !== undefined) return this.msFullscreenElement;
+	}
+});
 
 var findIndex = function (array, testFunction) {
 	if (Array.prototype.findIndex) return array.findIndex(testFunction);

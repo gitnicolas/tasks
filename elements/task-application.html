@@ -207,6 +207,7 @@
 
 						<div class="menu shadow-bottom hidden">
 							<div id="refresh" class="menu-item"><i>refresh</i> Refresh</div>
+							<div id="fullscreen" class="menu-item"><i>fullscreen</i> Fullscreen</div>
 							<div class="menu-item"><i>print</i> Print</div>
 							<div class="menu-item"><i>share</i> Share</div>
 						</div>
@@ -247,12 +248,14 @@
 				this.listen(this.$.burger, tapEventName, 'burger');
 				this.listen(this.$.action, tapEventName, 'action');
 				this.listen(this.$.refresh, tapEventName, 'refresh');
+				this.listen(this.$.fullscreen, tapEventName, 'fullscreen');
 				this.listen(this.$['left-pane'], tapEventName, 'leftPane');
 			},
 			detached: function () {
 				this.unlisten(this.$.burger, tapEventName, 'burger');
 				this.unlisten(this.$.action, tapEventName, 'action');
 				this.unlisten(this.$.refresh, tapEventName, 'refresh');
+				this.unlisten(this.$.fullscreen, tapEventName, 'fullscreen');
 				this.unlisten(this.$['left-pane'], tapEventName, 'leftPane');
 			},
 			burger: function (event) {
@@ -263,6 +266,10 @@
 			},
 			refresh: function () {
 				this.set('parameters.ts', (new Date()).toISOString());
+			},
+			fullscreen: function () {
+				if (document.getFullscreenElement()) document.exitFullscreen();
+				else document.documentElement.requestFullscreen();
 			},
 			leftPane: function (event) {
 				this.toggleStyle('left-pane', 'collapsed', event);

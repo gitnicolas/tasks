@@ -41,7 +41,7 @@
 				}
 			},
 			ready: function () {
-				if (isInternetExplorer()) {
+				if (isInternetExplorer) {
 					this._addComplexObserverEffect('fillSelect(priorities.*)');
 					this._addComplexObserverEffect('fillSelect(statuses.*)');
 				}

@@ -23,6 +23,15 @@
 				background-color: #757575;
 			}
 
+			i.navigation-icon {
+				position: absolute;
+				right: -256px;
+				bottom: 0;
+				opacity: 0.05;
+				font-size: 512px;
+				color: white;
+			}
+
 			div.navigation-title {
 				width: 256px;
 				height: 64px;
@@ -181,9 +190,11 @@
 			}
 		</style>
 		<div class="navigation">
+			<i class="navigation-icon">settings</i>
+
 			<div class="navigation-title">
 				<div class="navigation-name">
-					<div><span class="first-word">App</span> Navigation</div>
+					<div><span class="first-word">App</span> Settings</div>
 				</div>
 			</div>
 			<task-settings settings="{{settings}}"></task-settings>
@@ -207,7 +218,7 @@
 
 						<div class="menu shadow-bottom hidden">
 							<div id="refresh" class="menu-item"><i>refresh</i> Refresh</div>
-							<div id="fullscreen" class="menu-item"><i>fullscreen</i> Fullscreen</div>
+							<div id="fullscreen" class="menu-item"><i>[[fullscreenIcon]]</i> Fullscreen</div>
 							<div class="menu-item"><i>print</i> Print</div>
 							<div class="menu-item"><i>share</i> Share</div>
 						</div>
@@ -242,6 +253,13 @@
 					readOnly: false,
 					notify: false,
 					reflectToAttribute: false
+				},
+				fullscreenIcon: {
+					type: String,
+					value: 'fullscreen',
+					readOnly: false,
+					notify: false,
+					reflectToAttribute: false
 				}
 			},
 			attached: function () {
@@ -268,8 +286,13 @@
 				this.set('parameters.ts', (new Date()).toISOString());
 			},
 			fullscreen: function () {
-				if (document.getFullscreenElement()) document.exitFullscreen();
-				else document.documentElement.requestFullscreen();
+				if (document.getFullscreenElement()) {
+					document.exitFullscreen();
+					this.set('fullscreenIcon', 'fullscreen');
+				} else {
+					document.documentElement.requestFullscreen();
+					this.set('fullscreenIcon', 'fullscreen_exit');
+				}
 			},
 			leftPane: function (event) {
 				this.toggleStyle('left-pane', 'collapsed', event);

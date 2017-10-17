@@ -4,8 +4,6 @@ var isMobile = /iPad|iPhone|iPod|Android|Linux arm|BlackBerry|WinCE|Pocket/i.tes
 
 var isInternetExplorer = /MSIE|Trident/.test(navigator.userAgent);
 
-var tapEventName = isMobile ? 'touchstart' : 'click';
-
 if (!HTMLElement.prototype.requestFullscreen) Object.defineProperty(HTMLElement.prototype, 'requestFullscreen', {
 	value: HTMLElement.prototype.webkitRequestFullscreen || HTMLElement.prototype.webkitRequestFullScreen || HTMLElement.prototype.mozRequestFullScreen || HTMLElement.prototype.msRequestFullscreen
 });

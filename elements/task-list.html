@@ -57,7 +57,7 @@
 				<div class="counter shadow-bottom">[[displayed]] of [[tasks.length]]</div>
 			</div>
 			<template is="dom-repeat" id="list" items="[[tasks]]" as="task" filter="[[computeFilter(users.length, categories.length, filterString)]]" sort="sortByEmergency" observe="deadline priority category title user status">
-				<task-card task="[[task]]" on-tap="select"></task-card>
+				<task-card task="[[task]]" on-click="select"></task-card>
 			</template>
 		</div>
 		<array-selector id="selector" items="{{tasks}}" selected="{{task}}" toggle></array-selector>

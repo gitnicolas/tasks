@@ -202,7 +202,7 @@
 		<div class="page shadow-page transition">
 			<div class="header">
 				<div class="title shadow-bottom">
-					<div id="burger" class="burger">
+					<div class="burger" on-click="burger">
 						<i>menu</i>
 					</div>
 					<div class="back">
@@ -213,12 +213,12 @@
 					<div class="name">
 						<div class="ellipsis"><span class="first-word">Tasks</span> Organizer</div>
 					</div>
-					<div id="action" class="action">
+					<div class="action" on-click="action">
 						<i>more_vert</i>
 
 						<div class="menu shadow-bottom hidden">
-							<div id="refresh" class="menu-item"><i>refresh</i> Refresh</div>
-							<div id="fullscreen" class="menu-item"><i>[[fullscreenIcon]]</i> Fullscreen</div>
+							<div class="menu-item" on-click="refresh"><i>refresh</i> Refresh</div>
+							<div class="menu-item" on-click="fullscreen"><i>[[fullscreenIcon]]</i> Fullscreen</div>
 							<div class="menu-item"><i>print</i> Print</div>
 							<div class="menu-item"><i>share</i> Share</div>
 						</div>
@@ -229,7 +229,7 @@
 				</div>
 			</div>
 			<div id="content" class="content">
-				<div id="left-pane" class="left-pane shadow-right transition">
+				<div class="left-pane shadow-right transition" on-click="leftPane">
 					<task-users tasks="[[tasks]]" selected="{{users}}"></task-users>
 				</div>
 				<iron-ajax auto url="[[settings.server.url]]" headers="[[computeHeaders(settings.server.user, settings.server.password)]]" params="[[parameters]]" handle-as="json" last-response="{{tasks}}"></iron-ajax>
@@ -261,20 +261,6 @@
 					notify: false,
 					reflectToAttribute: false
 				}
-			},
-			attached: function () {
-				this.listen(this.$.burger, tapEventName, 'burger');
-				this.listen(this.$.action, tapEventName, 'action');
-				this.listen(this.$.refresh, tapEventName, 'refresh');
-				this.listen(this.$.fullscreen, tapEventName, 'fullscreen');
-				this.listen(this.$['left-pane'], tapEventName, 'leftPane');
-			},
-			detached: function () {
-				this.unlisten(this.$.burger, tapEventName, 'burger');
-				this.unlisten(this.$.action, tapEventName, 'action');
-				this.unlisten(this.$.refresh, tapEventName, 'refresh');
-				this.unlisten(this.$.fullscreen, tapEventName, 'fullscreen');
-				this.unlisten(this.$['left-pane'], tapEventName, 'leftPane');
 			},
 			burger: function (event) {
 				this.toggleStyle('page', 'expanded', event);

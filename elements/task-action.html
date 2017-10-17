@@ -60,13 +60,13 @@
 		</style>
 		<i>view_list</i>
 
-		<div class="save shadow-floating transition pressed">
+		<div class="save shadow-floating transition pressed" on-click="save">
 			<i>save</i>
 		</div>
-		<div class="delete shadow-floating transition pressed">
+		<div class="delete shadow-floating transition pressed" on-click="delete">
 			<i>delete</i>
 		</div>
-		<div class="create shadow-floating transition pressed">
+		<div class="create shadow-floating transition pressed" on-click="create">
 			<i>create</i>
 		</div>
 	</template>
@@ -107,30 +107,10 @@
 				this.classList.add('shadow-floating');
 			},
 			attached: function () {
-				this.listen(this, tapEventName, 'toggle');
-				var elements = this.getElementsByClassName('create');
-				var length = elements.length;
-				var i;
-				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'create');
-				elements = this.getElementsByClassName('delete');
-				length = elements.length;
-				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'delete');
-				elements = this.getElementsByClassName('save');
-				length = elements.length;
-				for (i = 0; i < length; i++) this.listen(elements[i], tapEventName, 'save');
+				this.listen(this, 'click', 'toggle');
 			},
 			detached: function () {
-				this.unlisten(this, tapEventName, 'toggle');
-				var elements = this.getElementsByClassName('create');
-				var length = elements.length;
-				var i;
-				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'create');
-				elements = this.getElementsByClassName('delete');
-				length = elements.length;
-				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'delete');
-				elements = this.getElementsByClassName('save');
-				length = elements.length;
-				for (i = 0; i < length; i++) this.unlisten(elements[i], tapEventName, 'save');
+				this.unlisten(this, 'click', 'toggle');
 			},
 			toggle: function (event) {
 				if (event) event.stopPropagation();

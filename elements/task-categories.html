@@ -35,7 +35,7 @@
 			}
 		</style>
 		<template is="dom-repeat" id="list" items="[[categories]]" as="category">
-			<div class="category" on-tap="select">[[category]]</div>
+			<div class="category" on-click="select">[[category]]</div>
 		</template>
 		<array-selector id="selector" items="[[categories]]" selected="{{selected}}" multi toggle></array-selector>
 	</template>

@@ -17,7 +17,7 @@
 			}
 		</style>
 		<template is="dom-repeat" id="list" items="[[users]]" as="user">
-			<div class="user ellipsis" on-tap="select">[[user]]</div>
+			<div class="user ellipsis" on-click="select">[[user]]</div>
 		</template>
 		<array-selector id="selector" items="[[users]]" selected="{{selected}}" multi toggle></array-selector>
 	</template>

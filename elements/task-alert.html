@@ -37,7 +37,7 @@
 				font-size: 64px;
 			}
 		</style>
-		<div id="dialog" class="dialog"><i style$="color: [[alert.color]];">[[alert.icon]]</i>[[alert.title]]</div>
+		<div class="dialog" on-click="clear"><i style$="color: [[alert.color]];">[[alert.icon]]</i>[[alert.title]]</div>
 	</template>
 	<script>
 		Polymer({
@@ -50,12 +50,6 @@
 					notify: true,
 					reflectToAttribute: false
 				}
-			},
-			attached: function () {
-				this.listen(this.$.dialog, tapEventName, 'clear');
-			},
-			detached: function () {
-				this.unlisten(this.$.dialog, tapEventName, 'clear');
 			},
 			clear: function (event) {
 				if (event) event.stopPropagation();

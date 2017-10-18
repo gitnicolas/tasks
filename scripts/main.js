@@ -21,12 +21,17 @@ if (!HTMLDocument.prototype.getFullscreenElement) Object.defineProperty(HTMLDocu
 	}
 });
 
-var findIndex = function (array, testFunction) {
-	if (Array.prototype.findIndex) return array.findIndex(testFunction);
-	var length = array.length;
-	for (var i = 0; i < length; i++) if (testFunction(array[i])) return i;
-	return -1;
-};
+if (!Array.prototype.findIndex) Object.defineProperty(Array.prototype, 'findIndex', {
+	value: function (callback) {
+		if (typeof callback !== 'function') throw new TypeError('callback must be a function');
+		var thisArg = arguments[1];
+		var length = this.length >>> 0;
+		var i;
+		if (thisArg) for (i = 0; i < length; i++) if (callback.call(thisArg, this[i], i, this)) return i;
+		else for (i = 0; i < length; i++) if (callback(this[i], i, this)) return i;
+		return -1;
+	}
+});
 
 var utf8ToBase64 = function (string) {
 	return btoa(encodeURI(string));

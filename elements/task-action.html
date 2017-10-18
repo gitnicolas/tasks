@@ -157,7 +157,7 @@
 				var selector = this.selector;
 				if (selector && selector.selected) {
 					selector.selected.deleted = true;
-					var index = findIndex(this.tasks, function (item) {
+					var index = this.tasks.findIndex(function (item) {
 						return item.deleted;
 					});
 					selector.deselect(this.tasks[index]);

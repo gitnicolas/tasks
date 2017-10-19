@@ -155,12 +155,10 @@
 			},
 			delete: function () {
 				var selector = this.selector;
-				if (selector && selector.selected) {
-					selector.selected.deleted = true;
-					var index = this.tasks.findIndex(function (item) {
-						return item.deleted;
-					});
-					selector.deselect(this.tasks[index]);
+				var selected;
+				if (selector && (selected = selector.selected)) {
+					var index = this.tasks.indexOf(selected);
+					selector.deselect(selected);
 					this.splice('tasks', index, 1);
 				}
 			},

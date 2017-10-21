@@ -50,9 +50,34 @@
 			observers: [
 				'unique(tasks.*)'
 			],
+			ready: function () {
+				try {
+					var users = JSON.parse(localStorage.getItem('users'));
+					if (users) {
+						if (!Array.isArray(users)) throw new TypeError('"users" is not an Array');
+						if (users.length && typeof users[0] !== 'string') throw new TypeError('"users" is not an Array of Strings');
+						this.set('users', users);
+						var selected = JSON.parse(localStorage.getItem('selectedUsers'));
+						if (selected) {
+							if (!Array.isArray(selected)) throw new TypeError('"selectedUsers" is not an Array');
+							if (selected.length && typeof selected[0] !== 'string') throw new TypeError('"selectedUsers" is not an Array of Strings');
+							var length = selected.length;
+							var selector = this.$.selector;
+							for (var i = 0; i < length; i++) {
+								selector.select(selected[i]);
+							}
+						}
+					}
+				} catch (e) {
+					localStorage.removeItem('users');
+					localStorage.removeItem('selectedUsers');
+					console.error('Error while restoring users from localStorage:', e);
+				}
+				this.isReady = true;
+			},
 			unique: function (property) {
 				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('user') > 0) {
-					this.debounce('persist', function () {
+					this.debounce('unique', function () {
 						var tasks = this.tasks;
 						var tasksLength = tasks.length;
 						var newUsers = [];
@@ -73,6 +98,12 @@
 						for (i = 0; i < length; i++) if (newUsers.indexOf(users[i]) === -1) this.splice('users', i, 1);
 						length = newUsers.length;
 						for (i = 0; i < length; i++) if (users.indexOf(newUsers[i]) === -1) this.push('users', newUsers[i]);
+						if (this.isReady) {
+							this.isReady = false;
+							localStorage.setItem('users', JSON.stringify(this.users));
+							localStorage.setItem('selectedUsers', JSON.stringify(this.selected));
+							this.isReady = true;
+						}
 					}, 500);
 				}
 			},
@@ -91,6 +122,7 @@
 				var item = event.model.user;
 				selector.select(item);
 				this.toggleClass('selected', selector.isSelected(item), event.target);
+				if (this.isReady) localStorage.setItem('selectedUsers', JSON.stringify(this.selected));
 			}
 		})
 	</script>

@@ -75,6 +75,14 @@
 				}
 				this.isReady = true;
 			},
+			attached: function () {
+				var elements = this.getElementsByTagName('div');
+				var elementsLength = elements.length;
+				var selected = this.selected;
+				var selectedLength = selected.length;
+				var i, j;
+				for (i = 0; i < elementsLength; i++) for (j = 0; j < selectedLength; j++) if (elements[i].innerHTML === selected[j]) elements[i].classList.add('selected');
+			},
 			unique: function (property) {
 				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('user') > 0) {
 					this.debounce('unique', function () {

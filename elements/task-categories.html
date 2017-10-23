@@ -68,9 +68,42 @@
 			observers: [
 				'unique(tasks.*)'
 			],
+			ready: function () {
+				try {
+					var categories = JSON.parse(localStorage.getItem('categories'));
+					if (categories) {
+						if (!Array.isArray(categories)) throw new TypeError('"categories" is not an Array');
+						if (categories.length && typeof categories[0] !== 'string') throw new TypeError('"categories" is not an Array of Strings');
+						this.set('categories', categories);
+						var selected = JSON.parse(localStorage.getItem('selectedCategories'));
+						if (selected) {
+							if (!Array.isArray(selected)) throw new TypeError('"selectedCategories" is not an Array');
+							if (selected.length && typeof selected[0] !== 'string') throw new TypeError('"selectedCategories" is not an Array of Strings');
+							var length = selected.length;
+							var selector = this.$.selector;
+							for (var i = 0; i < length; i++) {
+								selector.select(selected[i]);
+							}
+						}
+					}
+				} catch (e) {
+					localStorage.removeItem('categories');
+					localStorage.removeItem('selectedCategories');
+					console.error('Error while restoring categories from localStorage:', e);
+				}
+				this.isReady = true;
+			},
+			attached: function () {
+				var elements = this.getElementsByTagName('div');
+				var elementsLength = elements.length;
+				var selected = this.selected;
+				var selectedLength = selected.length;
+				var i, j;
+				for (i = 0; i < elementsLength; i++) for (j = 0; j < selectedLength; j++) if (elements[i].firstChild.nodeValue === selected[j]) elements[i].classList.add('selected');
+			},
 			unique: function (property) {
 				if (property.path === 'tasks' || property.path === 'tasks.splices' || property.path.indexOf('category') > 0) {
-					this.debounce('persist', function () {
+					this.debounce('unique', function () {
 						var tasks = this.tasks;
 						var tasksLength = tasks.length;
 						var newCategories = [];
@@ -91,6 +124,12 @@
 						for (i = 0; i < length; i++) if (newCategories.indexOf(categories[i]) === -1) this.splice('categories', i, 1);
 						length = newCategories.length;
 						for (i = 0; i < length; i++) if (categories.indexOf(newCategories[i]) === -1) this.push('categories', newCategories[i]);
+						if (this.isReady) {
+							this.isReady = false;
+							localStorage.setItem('categories', JSON.stringify(this.categories));
+							localStorage.setItem('selectedCategories', JSON.stringify(this.selected));
+							this.isReady = true;
+						}
 					}, 500);
 				}
 			},
@@ -109,6 +148,7 @@
 				var item = event.model.category;
 				selector.select(item);
 				this.toggleClass('selected', selector.isSelected(item), event.target);
+				if (this.isReady) localStorage.setItem('selectedCategories', JSON.stringify(this.selected));
 			}
 		})
 	</script>

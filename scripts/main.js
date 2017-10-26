@@ -27,8 +27,11 @@ if (!Array.prototype.findIndex) Object.defineProperty(Array.prototype, 'findInde
 		var thisArg = arguments[1];
 		var length = this.length >>> 0;
 		var i;
-		if (thisArg) for (i = 0; i < length; i++) if (callback.call(thisArg, this[i], i, this)) return i;
-		else for (i = 0; i < length; i++) if (callback(this[i], i, this)) return i;
+		if (thisArg) {
+			for (i = 0; i < length; i++) if (callback.call(thisArg, this[i], i, this)) return i;
+		} else {
+			for (i = 0; i < length; i++) if (callback(this[i], i, this)) return i;
+		}
 		return -1;
 	}
 });

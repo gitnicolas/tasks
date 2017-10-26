@@ -262,6 +262,9 @@
 					reflectToAttribute: false
 				}
 			},
+			attached: function () {
+				this.listen(document, 'keydown', 'shortcut');
+			},
 			burger: function (event) {
 				this.toggleStyle('page', 'expanded', event);
 			},
@@ -299,6 +302,30 @@
 				return {
 					Authorization: 'Basic ' + utf8ToBase64(user + ':' + password)
 				};
+			},
+			shortcut: function (event) {
+				var keys = [68, 78, 82, 83];
+				var key = event.which;
+				if (event.altKey && keys.indexOf(key) !== -1) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					event.stopPropagation();
+					var action = document.getElementsByTagName('task-action')[0];
+					switch (key) {
+						case 68:
+							action.delete();
+							break;
+						case 78:
+							action.create();
+							break;
+						case 82:
+							this.refresh();
+							break;
+						case 83:
+							action.save();
+							break;
+					}
+				}
 			}
 		})
 	</script>

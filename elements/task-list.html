@@ -198,8 +198,8 @@
 				}
 			},
 			move: function (offset) {
-				var elements = Array.prototype.slice.call(this.getElementsByTagName('task-card'));
-				var oldIndex = elements.findIndex(function (element) {
+				var elements = this.getElementsByTagName('task-card');
+				var oldIndex = Array.prototype.findIndex.call(elements, function (element) {
 					return element.task.selected;
 				});
 				var newIndex;

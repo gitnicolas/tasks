@@ -196,6 +196,21 @@
 					selector.select(item);
 					selector.set('selected.selected', true);
 				}
+			},
+			move: function (offset) {
+				var elements = Array.prototype.slice.call(this.getElementsByTagName('task-card'));
+				var oldIndex = elements.findIndex(function (element) {
+					return element.task.selected;
+				});
+				var newIndex;
+				if (oldIndex === -1) newIndex = (offset > 0) ? elements.length - 1 : 0;
+				else newIndex = Math.max(Math.min(oldIndex + offset, elements.length - 1), 0);
+				if (newIndex !== oldIndex) {
+					var selector = this.selector;
+					if (selector.selected) selector.set('selected.selected', false);
+					selector.select(elements[newIndex].task);
+					selector.set('selected.selected', true);
+				}
 			}
 		})
 	</script>

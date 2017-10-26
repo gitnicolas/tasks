@@ -304,14 +304,21 @@
 				};
 			},
 			shortcut: function (event) {
-				var keys = [68, 78, 82, 83];
+				var keys = [38, 40, 68, 78, 82, 83];
 				var key = event.which;
 				if (event.altKey && keys.indexOf(key) !== -1) {
 					event.preventDefault();
 					event.stopImmediatePropagation();
 					event.stopPropagation();
+					var list = document.getElementsByTagName('task-list')[0];
 					var action = document.getElementsByTagName('task-action')[0];
 					switch (key) {
+						case 38:
+							list.move(-1);
+							break;
+						case 40:
+							list.move(1);
+							break;
 						case 68:
 							action.delete();
 							break;
